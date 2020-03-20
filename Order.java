@@ -1,16 +1,15 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Order{
     int id;
-    ArrayList<Meal> meals;
+    String name;
+    Meal meals;
     Location destination;
-    float probability;
+    double probability;
 
-    public Order(int id, List<Meal> meals, Location destination, float probability){
+    public Order(int id, String name, Meal meal, Location destination, double probability){
         this.id = id;
-        this.meals = new ArrayList<>();
-        this.meals.addAll(meals);
+        this.name = name;
+        this.meals = meal;
+        this.destination = destination;
         this.probability = probability;
     }
 }
