@@ -19,6 +19,6 @@ public class Meal{
     public Meal(String name, List<FoodItem> items){
         this.name = name;
         this.items= new ArrayList<>();
-        items.addAll(items);
+        this.items.addAll(items);
     }
 }

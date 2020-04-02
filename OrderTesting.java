@@ -5,7 +5,7 @@ public class OrderTesting{
     public static void main(String[] args){
         //Make the default meals
         FoodItem hamburger = new FoodItem("hamburger", 6);
-        FoodItem fries = new FoodItem("fires", 4);
+        FoodItem fries = new FoodItem("fries", 4);
         FoodItem drink = new FoodItem("drink", 14);
         ArrayList<FoodItem> meal0 = new ArrayList<>();
         meal0.add(hamburger);
@@ -66,9 +66,20 @@ public class OrderTesting{
         
         //Print out order reciept
         for(int i = 0; i < orderList.size(); i++){
-            System.out.println("Order Name: " + orderList.get(i).name + "\tMeal: " + orderList.get(i).meals.name);
+            System.out.println(i + "\tOrder Name: " + orderList.get(i).name + "\tMeal: " + orderList.get(i).meals.name);
         }
-        //TODO: impliment FIFO to get the orders out on the drone
+
+        Drone drone = new Drone();
+        //Drone deliver groupings with FIFO
+        ArrayList<ArrayList<Order>> packages = drone.FIFOTime(orderList);
+
+        //Print the deliveries
+        for(int i = 0; i < packages.size(); i++){
+            System.out.println("Delivery " + i + ":");
+            for(int j = 0; j < packages.get(i).size(); j++){
+                System.out.println("\tOrder Name: " + packages.get(i).get(j).name + "\tMeal: " + packages.get(i).get(j).meals.name);
+            }
+        }
 
         //TODO: Impliment knapsacking to get the orders out on the drone
 
