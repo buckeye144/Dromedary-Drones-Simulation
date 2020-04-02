@@ -71,17 +71,33 @@ public class OrderTesting{
 
         Drone drone = new Drone();
         //Drone deliver groupings with FIFO
-        ArrayList<ArrayList<Order>> packages = drone.FIFOTime(orderList);
+        ArrayList<ArrayList<Order>> packages = drone.FIFO(orderList);
 
         //Print the deliveries
         for(int i = 0; i < packages.size(); i++){
-            System.out.println("Delivery " + i + ":");
+            System.out.println("Delivery (FIFO) " + i + ":");
+            int deliveryWeight = 0;
             for(int j = 0; j < packages.get(i).size(); j++){
-                System.out.println("\tOrder Name: " + packages.get(i).get(j).name + "\tMeal: " + packages.get(i).get(j).meals.name);
+                //System.out.println("\tOrder Name: " + packages.get(i).get(j).name + "\tMeal: " + packages.get(i).get(j).meals.name);
+                deliveryWeight += drone.OrderCapacity(packages.get(i).get(j));
             }
+            System.out.println("\tTotal Weight: " + deliveryWeight/16.0);
         }
 
-        //TODO: Impliment knapsacking to get the orders out on the drone
+        //TODO: Implement knapsacking to get the orders out on the drone
+
+        packages = drone.knapsacking(orderList);
+
+        //Print the deliveries
+        for(int i = 0; i < packages.size(); i++){
+            System.out.println("Delivery (Knapsaking) " + i + ":");
+            int deliveryWeight = 0;
+            for(int j = 0; j < packages.get(i).size(); j++){
+                //System.out.println("\tOrder Name: " + packages.get(i).get(j).name + "\tMeal: " + packages.get(i).get(j).meals.name);
+                deliveryWeight += drone.OrderCapacity(packages.get(i).get(j));
+            }
+            System.out.println("\tTotal Weight: " + deliveryWeight/16.0);
+        }
 
         //TODO: Use rough numbers for travel to simulate the difference in time eacho of them have.
     }
