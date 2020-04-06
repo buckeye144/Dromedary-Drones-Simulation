@@ -1,4 +1,3 @@
-
 public class Location {
 	private String name;
 	private int x;
@@ -33,6 +32,4 @@ public class Location {
 	public void setY(int y) {
 		this.y = y;
 	}
-
 }
-

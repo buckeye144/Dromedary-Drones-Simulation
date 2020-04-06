@@ -29,7 +29,7 @@ public class OrderTesting{
         Meal twoBurgers = new Meal("twoBurgers", meal3);
 
         //standard location
-        Location defaultLoc = new Location(0,0);
+        Location defaultLoc = new Location("null", 0, 0);
         //Put the meals into orders as they are probable
         Order order1 = new Order(1, "Jonathan", typical, defaultLoc, 0.55);
         Order order2 = new Order(2, "Nathan", twoBurgers, defaultLoc, 0.10);
