@@ -13,18 +13,18 @@ public class Map {
 	private String Locatione;
 	private ArrayList<Location> waypoints;
 	
-	public map() {
+	public Map() {
 		String name = "";
 		waypoints = new ArrayList<Location>();
 	}
 	
-	public map(String name, ArrayList<Location> waypoints) {
+	public Map(String name, ArrayList<Location> waypoints) {
 		//creates a map with a provided name and list of locations
 		this.name = name;
 		this.waypoints = waypoints;
 	}
 	
-	public map(File collegeMap) {
+	public Map(File collegeMap) {
 		//Creates a map using a given xml file
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
