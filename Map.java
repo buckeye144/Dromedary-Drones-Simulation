@@ -1,6 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
-
+import java.util.Random;
 import javax.tools.DocumentationTool.Location;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,7 +10,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
 public class Map {
-	private String Locatione;
+	private String name;
 	private ArrayList<Location> waypoints;
 	
 	public Map() {
@@ -64,7 +64,7 @@ public class Map {
 		Location reqLoc = null;
 		for (int i = 0; i < waypoints.size(); i++) {
 			if (waypoints(i).getName() == locName) {
-				reqLoc = waypoints(i)
+				reqLoc = waypoints(i);
 			}
 		}
 		return reqLoc;
@@ -82,5 +82,11 @@ public class Map {
 				success = waypoints.remove(i);
 			}
 		}
+	}
+	
+	public Location getRandom() {
+		Random rng = new Random();
+		int randLoc = rng.nextInt(waypoints.size());
+		return waypoints.get(randLoc);
 	}
 }

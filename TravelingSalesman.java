@@ -4,10 +4,15 @@ import java.util.ArrayList;
 
 public class TravelingSalesman {
 	private ArrayList<Connection> connections;
-	private double DIST = 0;
+	private double DIST;
 	private double BEST_DIST;
 	
-	public double calcRoute(Map map) {
+	public TravelingSalesman() {
+		DIST = 0;
+		BEST_DIST = 35200;
+	}
+	
+	public double calcRoute(ArrayList<Order> orders) {
 		Stack<Integer> stack = new Stack<>();
 		ArrayList<Coord> coordsToHit = new ArrayList<>();
 		Coord startingCoord;
@@ -16,12 +21,14 @@ public class TravelingSalesman {
 		Location sac = new Location(0, 0);
 		Stack<Location> currentTour = new Stack<>();
 		Stack<Location> bestTour = new Stack<>();
-		DIST = 0;
-		BEST_DIST = 35200;
 		
 		// Add to coordsToHit here
 		ArrayList<Location> locationsInOrders = new ArrayList<>();
 		// Populate locationsInOrders here
+		
+		for (int i = 0; i < orders.size(); i++) {
+			locationsInOrders.add(orders.get(i).destination);
+		}
 		
 		int n = locationsInOrders.size();
 		int nullIndex = -1;
