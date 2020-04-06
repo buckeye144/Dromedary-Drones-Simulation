@@ -13,7 +13,7 @@ public class TravelingSalesman {
 		Coord startingCoord;
 		Coord nullCoord = new Coord(-1,-1);
 		//ArrayList<Integer> currentTour = new ArrayList<>();
-		Location sac = new Location(0, 0);
+		Location sac = new Location("SAC", 0, 0);
 		Stack<Location> currentTour = new Stack<>();
 		Stack<Location> bestTour = new Stack<>();
 		DIST = 0;
