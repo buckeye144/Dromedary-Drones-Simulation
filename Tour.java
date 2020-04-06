@@ -13,14 +13,14 @@ public class Tour {
 	}
 	
 	public Tour(Location startingLoc) {
-		coords = new ArrayList<>();
-		coords.add(startingLoc);
+		locations = new ArrayList<>();
+		locations.add(startingLoc);
 		totalCost = 0;
 		sizeOfTour = 1;
 	}
 	
 	public void addCoord(Coord coord) {
-		Location lastCoord = coords.get(coords.size() - 1);
+		Location lastCoord = locations.get(locations.size() - 1);
 	}
 	
 	public int size() {

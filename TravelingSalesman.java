@@ -1,9 +1,5 @@
 // Solver for the traveling salesman problem, ported from Pacheco's parallel textbook, pg. 300
 import java.util.Stack;
-
-import com.sun.xml.internal.bind.v2.runtime.Location;
-
-import java.sql.Connection;
 import java.util.ArrayList;
 
 public class TravelingSalesman {
@@ -16,8 +12,8 @@ public class TravelingSalesman {
 		ArrayList<Coord> coordsToHit = new ArrayList<>();
 		Coord startingCoord;
 		Coord nullCoord = new Coord(-1,-1);
-		ArrayList<Integer> currentTour = new ArrayList<>();
-		Location sac = New Location(0, 0);
+		//ArrayList<Integer> currentTour = new ArrayList<>();
+		Location sac = new Location(0, 0);
 		Stack<Location> currentTour = new Stack<>();
 		Stack<Location> bestTour = new Stack<>();
 		DIST = 0;
@@ -33,33 +29,33 @@ public class TravelingSalesman {
 		Stack<Location> locationStack = new Stack<>();
 		
 		for (int i = (n-1); i >= 1; i--) {
-			if (!locationStack.contains(locationsInOrders.get(i)) {
-					locationStack.push(locationsInOrders.get(i));
+			if (!locationStack.contains(locationsInOrders.get(i))) {
+				locationStack.push(locationsInOrders.get(i));
 			}
 		}
 		
 		n = locationStack.size();
-		ArrayList<Location> locations = new ArrayList();
+		ArrayList<Location> locations = new ArrayList<>();
 		for (int i = 0; i < locationStack.size(); i++) {
 			locations.add(locationStack.pop());
 		}
 		
-		connections = newArrayList();
-		for (int i = 0; i < locations.length(); i++) {
+		connections = new ArrayList<>();
+		for (int i = 0; i < locations.size(); i++) {
 			locationStack.push(locations.get(i));
-			for (int j = 0; j < locations.length(); j++) {
+			for (int j = 0; j < locations.size(); j++) {
 				if (!(i==j)) {
 					Connection c = new Connection(locations.get(i), locations.get(j));
 					connections.add(c);
 				}
-				Connection sacCon = new Connection(locations.get(i), sacCon);
+				Connection sacCon = new Connection(locations.get(i), sac);
 				connections.add(sacCon);
 			}
 		}
 		
 		while (!locationStack.isEmpty()) {
-			currentLoc = locationStack.pop();
-			if ((currentLocation.getX() == sac.getX()) && (currentLocation.getY() == sac.getY())) {
+			Location currentLoc = locationStack.pop();
+			if ((currentLoc.getX() == sac.getX()) && (currentLoc.getY() == sac.getY())) {
 				currentTour.pop();
 			}
 			
@@ -75,15 +71,16 @@ public class TravelingSalesman {
 				
 				else {
 					locationStack.push(sac);
-					for (int i = 0; i < location.length(); i ++) {
-						if (feasible(currentTour, location.get(i))) {
-							locationStack.push(location.get(i));
+					for (int i = 0; i < locations.size(); i ++) {
+						if (feasible(currentTour, locations.get(i))) {
+							locationStack.push(locations.get(i));
 						}
 					}
 				}
 			}
-			return BEST_DIST;
+			//return BEST_DIST;
 		}
+		return BEST_DIST;
 	}
 	
 	public boolean feasible(Stack<Location> currentTour, Location loc) {
@@ -92,13 +89,13 @@ public class TravelingSalesman {
 			return false;
 		}
 		else {
-			int conDist = 0;
-			for (int i = 0; i < connections.length(); i++) {
-				if ((currentTour.peek() == connection.get(i).getLoc1()) && (loc == connection.get(i).getLoc2())) {
-					conDist = connection.get(i).getDistance();
+			double conDist = 0;
+			for (int i = 0; i < connections.size(); i++) {
+				if ((currentTour.peek() == connections.get(i).getLoc1()) && (loc == connections.get(i).getLoc2())) {
+					conDist = connections.get(i).getDistance();
 				}
 			}
-			int tempDist = DIST + conDist;
+			double tempDist = DIST + conDist;
 			if (tempDist >= BEST_DIST) {
 				return false;
 			}
