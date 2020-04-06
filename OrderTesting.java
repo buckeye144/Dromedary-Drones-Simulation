@@ -58,7 +58,10 @@ public class OrderTesting{
                 double orderNum = r.nextDouble();
                 double prevProbability = 0.0;
                 for(int o = 0; o < possOrders.size(); o++){
-                    if(orderNum < possOrders.get(o).probability + prevProbability){
+                    if(orderNum < possOrders.get(o).probability + prevProbability){  
+                        Order temp = possOrders.get(o);
+                        //TODO: add random location
+                        possOrders.get(o).destination = new Location("test", 1, 2);
                         orderList.add(possOrders.get(o));
                         break;
                     }
@@ -87,8 +90,6 @@ public class OrderTesting{
             System.out.println("\tTotal Weight: " + deliveryWeight/16.0);
         }
 
-        //TODO: Implement knapsacking to get the orders out on the drone
-
         packages = drone.knapsacking(orderList);
 
         //Print the deliveries
@@ -101,7 +102,12 @@ public class OrderTesting{
             }
             System.out.println("\tTotal Weight: " + deliveryWeight/16.0);
         }
-
-        //TODO: Use rough numbers for travel to simulate the difference in time eacho of them have.
+        //TSP
+        packages = drone.knapsacking(orderList);
+        TravelingSalesman tsp = new TravelingSalesman();
+        //TODO: Allow calcRoute to take in an arraylist of orders
+        for(int i = 0; i < packages.size(); i++){
+            System.out.println("Distance traveled for the " + i + "th order: " + tsp.calcRoute(packages.get(i)));
+        }
     }
 }
