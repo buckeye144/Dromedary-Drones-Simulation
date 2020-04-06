@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 public class MainMenu extends Application {
 	Stage menu;
+	Scene menuWindow;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -17,6 +18,7 @@ public class MainMenu extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
 		menu = primaryStage;
+		
 //		menu.setOnCloseRequest(e -> {
 //			e.consume();
 //			try {
@@ -26,24 +28,34 @@ public class MainMenu extends Application {
 //			}
 //		});
 		
-		double BUTTON_WIDTH = 150;
 		BorderPane menuScreen = new BorderPane();
 		VBox menuButtons = new VBox();
-		Scene menuWindow = new Scene(menuScreen, 1000, 750);
+		menuWindow = new Scene(menuScreen, 1000, 750);
 		Button start = new Button("Start Simulation");
 		Button settings = new Button("Settings");
+		Button viewResults = new Button("View Results");
+		Button quit = new Button("Quit");
+		
+		FoodItem f = new FoodItem("Fries", 1);
+		Meal m = new Meal("Just fries", f);
+		Location l = new Location("My room", 50, 100);
+		Order o = new Order(001, "FRIES", m, l, 50);
 		
 		//Button styles
+		double BUTTON_WIDTH = 150;
 		start.setStyle("-fx-font-size:16");
 		start.setMaxWidth(BUTTON_WIDTH);
-//		settings.setStyle("-fx-font-size:16");
-//		settings.setMaxWidth(BUTTON_WIDTH);
+		settings.setStyle("-fx-font-size:16");
+		settings.setMaxWidth(BUTTON_WIDTH);
+		viewResults.setStyle("-fx-font-size:16");
+		viewResults.setMaxWidth(BUTTON_WIDTH);
+		quit.setStyle("-fx-font-size:16");
+		quit.setMaxWidth(BUTTON_WIDTH);
 		
 		//VBox button list
-		menuScreen.setPadding(new Insets(20, 0, 20, 20));
 		menuButtons.setSpacing(10);
 		menuButtons.setPadding(new Insets(0, 20, 10, 20));
-		menuButtons.getChildren().addAll(start);
+		menuButtons.getChildren().addAll(start,settings,viewResults,quit);
 		
 		//Button position
 		menuButtons.setAlignment(Pos.CENTER);
@@ -52,12 +64,26 @@ public class MainMenu extends Application {
 		//Button jobs
 		settings.setOnAction(e -> {
 			SettingsPage sp = new SettingsPage();
-			menu.getScene().setRoot(sp.settingsPage());
+			menu.setScene(sp.settingsPage(this));
+		});
+		
+		viewResults.setOnAction(e -> {
+			Results r = new Results();
+			menu.setScene(r.results(this));
+		});
+		
+		quit.setOnAction(e -> {
+//			try {
+//				closeProgram();
+//			} catch (Exception e1) {
+//				e1.printStackTrace();
+//			}
+			menu.close();
 		});
 		
 		menu.setTitle("Drone Delivery Simulation");
 		menu.setScene(menuWindow);
-		menu.setResizable(true);
+		menu.setResizable(false);
 		menu.show();
 	}
 	
@@ -67,5 +93,4 @@ public class MainMenu extends Application {
 			menu.close();
 		}
 	}
-
 }
