@@ -1,28 +1,31 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class OrderTesting{
     public static void main(String[] args){
         //Make the default meals
         FoodItem hamburger = new FoodItem("hamburger", 6);
         FoodItem fries = new FoodItem("fries", 4);
         FoodItem drink = new FoodItem("drink", 14);
-        ArrayList<FoodItem> meal0 = new ArrayList<>();
+        ObservableList<FoodItem> meal0 = FXCollections.emptyObservableList();
         meal0.add(hamburger);
         meal0.add(fries);
         meal0.add(drink);
         Meal typical = new Meal("typical", meal0);
-        ArrayList<FoodItem> meal1 = new ArrayList<>();
+        ObservableList<FoodItem> meal1 = FXCollections.emptyObservableList();
         meal1.add(hamburger);
         meal1.add(hamburger);
         meal1.add(fries);
         meal1.add(drink);
         Meal twoBurgerMeal = new Meal("twoBurgerMeal", meal1);
-        ArrayList<FoodItem> meal2 = new ArrayList<>();
+        ObservableList<FoodItem> meal2 = FXCollections.emptyObservableList();
         meal2.add(hamburger);
         meal2.add(fries);
         Meal burgerFries = new Meal("burgerFries", meal2);
-        ArrayList<FoodItem> meal3 = new ArrayList<>();
+        ObservableList<FoodItem> meal3 = FXCollections.emptyObservableList();
         meal3.add(hamburger);
         meal3.add(hamburger);
         meal3.add(fries);
