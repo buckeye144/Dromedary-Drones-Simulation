@@ -9,12 +9,12 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-public class map {
-	private StLocatione;
+public class Map {
+	private String Locatione;
 	private ArrayList<Location> waypoints;
 	
 	public map() {
-		name = "";
+		String name = "";
 		waypoints = new ArrayList<Location>();
 	}
 	
@@ -54,14 +54,14 @@ public class map {
 		return name;
 	}
 	
-	public location getLocation(int i) {
+	public Location getLocation(int i) {
 		//returns a requested location
 		return waypoints(i);
 	}
 	
-	public location getLocation(String locName) {
+	public Location getLocation(String locName) {
 		//returns a requested location
-		location reqLoc = null;
+		Location reqLoc = null;
 		for (int i = 0; i < waypoints.size(); i++) {
 			if (waypoints(i).getName() == locName) {
 				reqLoc = waypoints(i)

@@ -1,10 +1,10 @@
 
-public class location {
+public class Location {
 	private String name;
 	private int x;
 	private int y;
 	
-	public location(String name, int x, int y) {
+	public Location(String name, int x, int y) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
