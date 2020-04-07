@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +37,7 @@ public class makeOrders{
         twoBurgers = new Meal("twoBurgers", meal3, .15);
 	     
 	}
-    public ArrayList<Double> simulation(){
+    public ArrayList<Double> simulation(Map map){
     	
         //standard location
         Location defaultLoc = new Location("null", 0, 0);
@@ -72,7 +73,7 @@ public class makeOrders{
                     		+ prevProbability){  
                         Order temp = possOrders.get(o);
                         //TODO: add random location
-                        possOrders.get(o).destination = new Location("test", 1, 2);
+                        possOrders.get(o).destination = map.getRandom();
                         orderList.add(possOrders.get(o));
                         break;
                     }
