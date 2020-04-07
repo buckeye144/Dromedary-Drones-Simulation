@@ -22,10 +22,6 @@ public class Results {
 		Button back = new Button("Back");
 		Label average = new Label("Average FIFO time: ");
 		Label average2 = new Label("Average Knapsack time: ");
-		Label best = new Label("Best FIFO time: ");
-		Label best2 = new Label("Best Knapsack time: ");
-		Label worst = new Label("Worst FIFO time: ");
-		Label worst2 = new Label("Worst Knapsack time: ");
 		
 		lineChart.setTitle("Drone Simulation");
 		
@@ -65,10 +61,6 @@ public class Results {
         
         average.setStyle("-fx-font-size:20");
         average2.setStyle("-fx-font-size:20");
-        best.setStyle("-fx-font-size:20");
-        best2.setStyle("-fx-font-size:20");
-        worst.setStyle("-fx-font-size:20");
-        worst2.setStyle("-fx-font-size:20");
         
 		back.setStyle("-fx-font-size:16");
 		back.setMaxWidth(150);
@@ -83,13 +75,9 @@ public class Results {
 		GridPane.setConstraints(average, 0, 0);
 		GridPane.setConstraints(average2, 0, 1);
 		GridPane.setConstraints(back, 0, 2);
-		GridPane.setConstraints(best, 1, 0);
-		GridPane.setConstraints(best2, 1, 1);
-		GridPane.setConstraints(worst, 2, 0);
-		GridPane.setConstraints(worst2, 2, 1);
 		
-		subRoot.getChildren().addAll(average,average2,best,best2,
-				worst,worst2,back);
+		subRoot.getChildren().addAll(average,average2,
+				back);
 		
 		VBox root = new VBox();
 		root.setSpacing(10);

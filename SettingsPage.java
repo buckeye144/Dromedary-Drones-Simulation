@@ -9,7 +9,6 @@ public class SettingsPage {
 		
 		FoodSettings fs = new FoodSettings();
 		MealSettings ms = new MealSettings();
-		OrderSettings os = new OrderSettings();
 		ShiftSettings ss = new ShiftSettings();
 		LocationSettings ls = new LocationSettings();
 		TabPane settings = new TabPane();
@@ -17,18 +16,16 @@ public class SettingsPage {
 		
 		Tab food = new Tab("Food");
 		Tab meals = new Tab("Meals");
-		Tab order = new Tab("Orders");
 		Tab shift = new Tab("Shifts");
 		Tab locations = new Tab("Locations");
 		
 		food.setContent(fs.food(mm));
 		locations.setContent(ls.locations(mm));
 		meals.setContent(ms.meals(mm));
-		order.setContent(os.orders(mm));
 		shift.setContent(ss.shiftSettings(mm));
 		
 		settings.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-		settings.getTabs().addAll(food,meals,order,shift,locations);
+		settings.getTabs().addAll(food,meals,shift,locations);
 		
 		return settingsPage;
 	}
@@ -40,3 +37,4 @@ public class SettingsPage {
 //		Food page: modify existing ones
 //		Locations page: modify locations
 //		Meal page: add/remove/modify meals, change probabilities
+//		Remove orders tab

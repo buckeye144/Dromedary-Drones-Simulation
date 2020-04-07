@@ -108,6 +108,8 @@ public class LocationSettings {
 		grid.getChildren().addAll(addLabel,removeLabel,name,x,y,
 				add,remove,removeLocation,confirm,confirm2,update);
 		
+		//TODO: Implement XML adding
+		//Currently a temporary change, if program shuts down, changes are lost
 		add.setOnAction(e -> {
 			//If one of the boxes is empty, print error message
 			if (name.getText().matches("") || x.getText().matches("")
@@ -118,7 +120,7 @@ public class LocationSettings {
 			else if (!x.getText().matches("[^\\d]") || !y.getText().matches("[^\\d]")) {
 				confirm.setText("Invalid name/coordinates");
 			}
-			//Adds new food item
+			//Adds new location item
 			else if (name.getText() != null && x.getText() != null && y.getText() != null) {
 				Location l = new Location(name.getText(), Integer.parseInt(x.getText()),
 						Integer.parseInt(y.getText()));
@@ -131,23 +133,26 @@ public class LocationSettings {
 			}
 		});
 		
-//		update.setOnAction(e -> {
-//			if (name.getText().matches("") || x.getText().matches("")
-//					|| y.getText().matches("")) {
-//				confirm.setText("Invalid name/coordinates");
-//			}
-//			else if (!x.getText().matches("[0-9]*") || !y.getText().matches("[0-9]*")) {
-//				confirm.setText("Invalid name/coordinates");
-//			}
-//			else if (name.getText() != null && x.getText() != null && y.getText() != null) {
-//				xml.edit("Student Activity Center", "xCoord", "0");
-//				confirm.setText("Student Activity Center" + " updated!");
-//				name.clear();
-//				x.clear();
-//				y.clear();
-//			}
-//		});
+		//Changes not lost
+		update.setOnAction(e -> {
+			if (name.getText().matches("") || x.getText().matches("")
+					|| y.getText().matches("")) {
+				confirm.setText("Invalid name/coordinates");
+			}
+			else if (!x.getText().matches("[0-9]*") || !y.getText().matches("[0-9]*")) {
+				confirm.setText("Invalid name/coordinates");
+			}
+			else if (name.getText() != null && x.getText() != null && y.getText() != null) {
+				String current = locations.getSelectionModel().selectedItemProperty().get();
+				xml.edit(current, name.getText(), x.getText(), y.getText());
+				confirm.setText("Updated!");
+				name.clear();
+				x.clear();
+				y.clear();
+			}
+		});
 		
+		//Changes are lost
 		remove.setOnAction(e -> {
 			//Can't remove nothing
 			if (removeLocation.getText().matches("")) {

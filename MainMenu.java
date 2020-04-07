@@ -28,6 +28,9 @@ public class MainMenu extends Application {
 //			}
 //		});
 		
+		makeOrders os = new makeOrders();
+		os.simulation();
+		
 		BorderPane menuScreen = new BorderPane();
 		VBox menuButtons = new VBox();
 		menuWindow = new Scene(menuScreen, 1000, 750);
@@ -35,11 +38,6 @@ public class MainMenu extends Application {
 		Button settings = new Button("Settings");
 		Button viewResults = new Button("View Results");
 		Button quit = new Button("Quit");
-		
-		FoodItem f = new FoodItem("Fries", 1);
-		Meal m = new Meal("Just fries", f);
-		Location l = new Location("My room", 50, 100);
-		Order o = new Order(001, "FRIES", m, l, 50);
 		
 		//Button styles
 		double BUTTON_WIDTH = 150;
