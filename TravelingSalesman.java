@@ -6,6 +6,7 @@ public class TravelingSalesman {
 	private ArrayList<Connection> connections;
 	private double DIST;
 	private double BEST_DIST;
+	private double 
 	
 	public TravelingSalesman() {
 		DIST = 0;
@@ -87,7 +88,7 @@ public class TravelingSalesman {
 			}
 			//return BEST_DIST;
 		}
-		return BEST_DIST;
+		return bestTour;
 	}
 	
 	public boolean feasible(Stack<Location> currentTour, Location loc) {
@@ -112,6 +113,8 @@ public class TravelingSalesman {
 			}
 		}
 	}
+	
+	
 	
 	// For each order in the simulation
 	// 	Each order has a Location attached to it
