@@ -26,36 +26,17 @@ public class Results {
 		lineChart.setTitle("Drone Simulation");
 		
 		XYChart.Series series = new XYChart.Series();
-		series.setName("Test");
+		series.setName("FIFO");
 		series.getData().add(new XYChart.Data(0, 0));
-		series.getData().add(new XYChart.Data(1, 23));
-        series.getData().add(new XYChart.Data(2, 14));
-        series.getData().add(new XYChart.Data(3, 15));
-        series.getData().add(new XYChart.Data(4, 24));
-        series.getData().add(new XYChart.Data(5, 34));
-        series.getData().add(new XYChart.Data(6, 36));
-        series.getData().add(new XYChart.Data(7, 22));
-        series.getData().add(new XYChart.Data(8, 45));
-        series.getData().add(new XYChart.Data(9, 43));
-        series.getData().add(new XYChart.Data(10, 17));
-        series.getData().add(new XYChart.Data(11, 29));
-        series.getData().add(new XYChart.Data(12, 25));
+//		for (int i = 0; i < 20; i++) {
+//			series.getData().add(new XYChart.Data(i + 1, mm.results.get(i));
+//		}
         
         XYChart.Series series2 = new XYChart.Series();
-        series2.setName("Test 2");
-        series2.getData().add(new XYChart.Data(0, 0));
-        series2.getData().add(new XYChart.Data(1, 33));
-        series2.getData().add(new XYChart.Data(2, 34));
-        series2.getData().add(new XYChart.Data(3, 25));
-        series2.getData().add(new XYChart.Data(4, 44));
-        series2.getData().add(new XYChart.Data(5, 39));
-        series2.getData().add(new XYChart.Data(6, 16));
-        series2.getData().add(new XYChart.Data(7, 55));
-        series2.getData().add(new XYChart.Data(8, 54));
-        series2.getData().add(new XYChart.Data(9, 48));
-        series2.getData().add(new XYChart.Data(10, 27));
-        series2.getData().add(new XYChart.Data(11, 37));
-        series2.getData().add(new XYChart.Data(12, 29));
+        series2.setName("Knapsack");
+//        for (int i = 20; i < mm.results.size(); i++) {
+//        	
+//        }
         
         lineChart.getData().addAll(series,series2);
         

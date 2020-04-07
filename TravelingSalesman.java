@@ -6,18 +6,13 @@ public class TravelingSalesman {
 	private ArrayList<Connection> connections;
 	private double DIST;
 	private double BEST_DIST;
-	private double 
 	
 	public TravelingSalesman() {
 		DIST = 0;
 		BEST_DIST = 35200;
 	}
 	
-	public double calcRoute(ArrayList<Order> orders) {
-		Stack<Integer> stack = new Stack<>();
-		ArrayList<Coord> coordsToHit = new ArrayList<>();
-		Coord startingCoord;
-		Coord nullCoord = new Coord(-1,-1);
+	public Stack<Location> calcRoute(ArrayList<Order> orders) {
 		//ArrayList<Integer> currentTour = new ArrayList<>();
 		Location sac = new Location("SAC", 0, 0);
 		Stack<Location> currentTour = new Stack<>();
@@ -32,7 +27,6 @@ public class TravelingSalesman {
 		}
 		
 		int n = locationsInOrders.size();
-		int nullIndex = -1;
 		
 		Stack<Location> locationStack = new Stack<>();
 		
@@ -72,7 +66,10 @@ public class TravelingSalesman {
 				if (currentTour.size() == n) {
 					if (DIST < BEST_DIST) {
 						BEST_DIST = DIST;
-						bestTour = currentTour;
+						bestTour = (Stack<Location>) currentTour.clone();
+						System.out.println(bestTour.get(0).getName());
+						System.out.println(bestTour.get(1).getName());
+						System.out.println(bestTour.get(2).getName());
 					}
 					currentTour.pop();
 				}

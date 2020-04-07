@@ -3,13 +3,13 @@ import javafx.collections.ObservableList;
 
 public class Meal{
     String name;
-    int probability;
+    double probability;
     ObservableList<FoodItem> items;
 
-	public Meal(String name, ObservableList<FoodItem> meal0, int probability) {
+	public Meal(String name, ObservableList<FoodItem> meal0, double probability) {
 		this.name = name;
         this.probability = probability;
         this.items= FXCollections.observableArrayList();
-        this.items.addAll(items);
+        this.items.addAll(meal0);
 	}
 }

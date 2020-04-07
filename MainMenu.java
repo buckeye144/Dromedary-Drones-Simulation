@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +13,7 @@ import javafx.stage.Stage;
 public class MainMenu extends Application {
 	Stage menu;
 	Scene menuWindow;
+	ArrayList<Double> results;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -27,9 +30,6 @@ public class MainMenu extends Application {
 //				ex.printStackTrace();
 //			}
 //		});
-		
-		makeOrders os = new makeOrders();
-		os.simulation();
 		
 		BorderPane menuScreen = new BorderPane();
 		VBox menuButtons = new VBox();
@@ -60,6 +60,11 @@ public class MainMenu extends Application {
 		menuScreen.setBottom(menuButtons);
 		
 		//Button jobs
+		start.setOnAction(e -> {
+			makeOrders os = new makeOrders();
+			results = os.simulation();
+		});
+		
 		settings.setOnAction(e -> {
 			SettingsPage sp = new SettingsPage();
 			menu.setScene(sp.settingsPage(this));
