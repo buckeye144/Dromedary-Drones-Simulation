@@ -9,7 +9,7 @@ public class timeCalc {
 		
 	}
 	
-	public double time(double dist, ArrayList<Order> orders) {
+	public int time(double dist, ArrayList<Order> orders) {
 		double time = dist/1760;
 		double n = 0;
 		
@@ -23,6 +23,7 @@ public class timeCalc {
 		
 		time = time + (n * .5) + 3;
 		
+		time = (int) time;
 		return time;
 	}
 }
