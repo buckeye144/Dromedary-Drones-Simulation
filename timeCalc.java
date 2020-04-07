@@ -10,7 +10,7 @@ public class timeCalc {
 	}
 	
 	public int time(double dist, ArrayList<Order> orders) {
-		double time = dist/1760;
+		double dTime = dist/1760;
 		double n = 0;
 		
 		Stack<Location> orderLoc = new Stack<Location>();
@@ -21,9 +21,9 @@ public class timeCalc {
 		}
 		
 		
-		time = time + (n * .5) + 3;
+		dTime = dTime + (n * .5) + 3;
 		
-		time = (int) time;
+		int time = (int) dTime;
 		return time;
 	}
 }

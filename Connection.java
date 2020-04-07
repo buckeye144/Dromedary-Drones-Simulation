@@ -1,3 +1,4 @@
+  
 
 public class Connection {
 	private Location loc1;

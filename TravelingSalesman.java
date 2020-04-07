@@ -13,16 +13,10 @@ public class TravelingSalesman {
 	}
 	
 	public double calcRoute(ArrayList<Order> orders) {
-		Stack<Integer> stack = new Stack<>();
-		ArrayList<Coord> coordsToHit = new ArrayList<>();
-		Coord startingCoord;
-		Coord nullCoord = new Coord(-1,-1);
-		//ArrayList<Integer> currentTour = new ArrayList<>();
 		Location sac = new Location("SAC", 0, 0);
 		Stack<Location> currentTour = new Stack<>();
 		Stack<Location> bestTour = new Stack<>();
 		
-		// Add to coordsToHit here
 		ArrayList<Location> locationsInOrders = new ArrayList<>();
 		// Populate locationsInOrders here
 		
