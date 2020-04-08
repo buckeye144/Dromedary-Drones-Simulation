@@ -61,8 +61,13 @@ public class MainMenu extends Application {
 		
 		//Button jobs
 		start.setOnAction(e -> {
+			Map m = new Map("locations.copy.xml");
 			makeOrders os = new makeOrders();
-			results = os.simulation();
+			results = os.simulation(m);
+			System.out.println("\nResults:");
+			for(int i = 0; i < results.size(); i++) {
+				System.out.println(results.get(i));
+			}
 		});
 		
 		settings.setOnAction(e -> {
@@ -72,7 +77,7 @@ public class MainMenu extends Application {
 		
 		viewResults.setOnAction(e -> {
 			Results r = new Results();
-			menu.setScene(r.results(this));
+			menu.setScene(r.results(this, results));
 		});
 		
 		quit.setOnAction(e -> {

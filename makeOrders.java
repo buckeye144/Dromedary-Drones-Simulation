@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,13 +67,11 @@ public class makeOrders{
                 double orderNum = r.nextDouble();
                 double prevProbability = 0.0;
                 for(int o = 0; o < possOrders.size(); o++){
-                    if(orderNum < 
-                    		possOrders.get(o).meals.probability 
-                    		+ prevProbability){  
-                        Order temp = possOrders.get(o);
+                    if(orderNum < possOrders.get(o).meals.probability + prevProbability) {
+                        Order temp = new Order(possOrders.get(o));
                         //TODO: add random location
-                        possOrders.get(o).destination = map.getRandom();
-                        orderList.add(possOrders.get(o));
+                        temp.destination = map.getRandom();
+                        orderList.add(temp);
                         break;
                     }
                     prevProbability += possOrders.get(o).meals.probability;
@@ -102,7 +99,7 @@ public class makeOrders{
 //            //System.out.println("\tTotal Weight: " + deliveryWeight/16.0);
 //        }
 
-        packages = drone.knapsacking(orderList);
+//        packages = drone.knapsacking(orderList);
 
 //        //Print the deliveries
 //        for(int i = 0; i < packages.size(); i++){
@@ -116,7 +113,6 @@ public class makeOrders{
 //        }
         
         //TSP
-        packages = drone.knapsacking(orderList);
         timeCalc tc = new timeCalc();
         double[] dist = new double[packages.size()];
         ArrayList<Double> times = new ArrayList<>();
@@ -129,6 +125,12 @@ public class makeOrders{
             	times.add(temp.get(j));
             }
         }
+        
+//        ArrayList<Double> temp = tc.time(packages.get(0), first);
+//        for (int j = 0; j < temp.size(); j++) {
+//        	times.add(temp.get(j));
+//        }
+//        System.out.println(times);
         return times;
     }
 }

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,7 +13,7 @@ import javafx.scene.layout.VBox;
 
 public class Results {
 
-	public Scene results(MainMenu mm) {
+	public Scene results(MainMenu mm, ArrayList<Double> results) {
 		
 		final NumberAxis xAxis = new NumberAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -28,9 +30,9 @@ public class Results {
 		XYChart.Series series = new XYChart.Series();
 		series.setName("FIFO");
 		series.getData().add(new XYChart.Data(0, 0));
-//		for (int i = 0; i < 20; i++) {
-//			series.getData().add(new XYChart.Data(i + 1, mm.results.get(i));
-//		}
+		for (int i = 0; i < results.size(); i++) {
+			series.getData().add(new XYChart.Data(i, results.get(i)));
+		}
         
         XYChart.Series series2 = new XYChart.Series();
         series2.setName("Knapsack");
