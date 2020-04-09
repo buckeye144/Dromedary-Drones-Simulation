@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,11 +8,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class MainMenu extends Application {
 	Stage menu;
 	Scene menuWindow;
-	ArrayList<Double> results;
+	ArrayList<ArrayList<Double>> results;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -53,7 +51,7 @@ public class MainMenu extends Application {
 		//VBox button list
 		menuButtons.setSpacing(10);
 		menuButtons.setPadding(new Insets(0, 20, 10, 20));
-		menuButtons.getChildren().addAll(start,settings,viewResults,quit);
+		menuButtons.getChildren().addAll(start,quit);
 		
 		//Button position
 		menuButtons.setAlignment(Pos.CENTER);
@@ -61,8 +59,14 @@ public class MainMenu extends Application {
 		
 		//Button jobs
 		start.setOnAction(e -> {
+			Map m = new Map("locations.copy.xml");
 			makeOrders os = new makeOrders();
-			results = os.simulation();
+			os.simulation(m);
+			results = new ArrayList<ArrayList<Double>>();
+			results.add(os.FIFO());
+			results.add(os.KnapSack());
+			Results r = new Results();
+			menu.setScene(r.results(this, results));
 			exportExcel excel = new exportExcel();
 			excel.printExcel(results);
 		});
@@ -74,7 +78,7 @@ public class MainMenu extends Application {
 		
 		viewResults.setOnAction(e -> {
 			Results r = new Results();
-			menu.setScene(r.results(this));
+			menu.setScene(r.results(this, results));
 		});
 		
 		quit.setOnAction(e -> {

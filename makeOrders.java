@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +9,9 @@ public class makeOrders{
 	Meal burgerFries;
 	Meal twoBurgers;
 	ObservableList<Meal> meals;
+	ArrayList<Order> orderList;
+	Drone drone;
+	
 	public makeOrders() {
 		//Make the default meals
 		FoodItem hamburger = new FoodItem("hamburger", 6);
@@ -37,15 +39,15 @@ public class makeOrders{
         twoBurgers = new Meal("twoBurgers", meal3, .15);
 	     
 	}
-    public ArrayList<Double> simulation(Map map){
+    public void simulation(Map map) {
     	
         //standard location
         Location defaultLoc = new Location("null", 0, 0);
         
-        Order order1 = new Order(1, "Jonathan", typical, defaultLoc);
-        Order order2 = new Order(2, "Nathan", twoBurgers, defaultLoc);
-        Order order3 = new Order(3, "Daniel", burgerFries, defaultLoc);
-        Order order4 = new Order(4, "Josh", twoBurgerMeal, defaultLoc);
+        Order order1 = new Order(1, "Jonathan", typical, defaultLoc,0.0);
+        Order order2 = new Order(2, "Nathan", twoBurgers, defaultLoc,0.0);
+        Order order3 = new Order(3, "Daniel", burgerFries, defaultLoc,0.0);
+        Order order4 = new Order(4, "Josh", twoBurgerMeal, defaultLoc,0.0);
         
         //Put the meals into orders as they are probable
         ArrayList<Order> possOrders = new ArrayList<>();
@@ -55,7 +57,7 @@ public class makeOrders{
         possOrders.add(order4);
         
         //Put the orders into the list of all orders for the day
-        ArrayList<Order> orderList = new ArrayList<>();
+        orderList = new ArrayList<>();
         
         //add the orders to the list as they are listed
         //TODO: Add timestamps or something to the orders
@@ -68,67 +70,66 @@ public class makeOrders{
                 double orderNum = r.nextDouble();
                 double prevProbability = 0.0;
                 for(int o = 0; o < possOrders.size(); o++){
-                    if(orderNum < 
-                    		possOrders.get(o).meals.probability 
-                    		+ prevProbability){  
-                        Order temp = possOrders.get(o);
+                    if(orderNum < possOrders.get(o).meals.probability + prevProbability) {
+                        Order temp = new Order(possOrders.get(o));
                         //TODO: add random location
-                        possOrders.get(o).destination = map.getRandom();
-                        orderList.add(possOrders.get(o));
+                        temp.timeIn = i * 60 + (j * 4) % 60;
+                        temp.destination = map.getRandom();
+                        orderList.add(temp);
                         break;
                     }
                     prevProbability += possOrders.get(o).meals.probability;
                 }
             }
         }
+    }
         
-        //Print out order reciept
-//        for(int i = 0; i < orderList.size(); i++){
-//            System.out.println(i + "\tOrder Name: " + orderList.get(i).name + "\tMeal: " + orderList.get(i).meals.name);
-//        }
-
-        Drone drone = new Drone();
         //Drone deliver groupings with FIFO
+    public ArrayList<Double> FIFO() {
+        drone = new Drone();
         ArrayList<ArrayList<Order>> packages = drone.FIFO(orderList);
-
-//        //Print the deliveries
-//        for(int i = 0; i < packages.size(); i++){
-//            //System.out.println("Delivery (FIFO) " + i + ":");
-//            int deliveryWeight = 0;
-//            for(int j = 0; j < packages.get(i).size(); j++){
-//                //System.out.println("\tOrder Name: " + packages.get(i).get(j).name + "\tMeal: " + packages.get(i).get(j).meals.name);
-//                deliveryWeight += drone.OrderCapacity(packages.get(i).get(j));
-//            }
-//            //System.out.println("\tTotal Weight: " + deliveryWeight/16.0);
-//        }
-
-        packages = drone.knapsacking(orderList);
-
-//        //Print the deliveries
-//        for(int i = 0; i < packages.size(); i++){
-//            //System.out.println("Delivery (Knapsacking) " + i + ":");
-//            int deliveryWeight = 0;
-//            for(int j = 0; j < packages.get(i).size(); j++){
-//                //System.out.println("\tOrder Name: " + packages.get(i).get(j).name + "\tMeal: " + packages.get(i).get(j).meals.name);
-//                deliveryWeight += drone.OrderCapacity(packages.get(i).get(j));
-//            }
-//            //System.out.println("\tTotal Weight: " + deliveryWeight/16.0);
-//        }
-        
-        //TSP
-        packages = drone.knapsacking(orderList);
-        timeCalc tc = new timeCalc();
-        double[] dist = new double[packages.size()];
-        ArrayList<Double> times = new ArrayList<>();
+        timeCalc tc1 = new timeCalc();
+        ArrayList<Double> times1 = new ArrayList<>();
         //TODO: Allow calcRoute to take in an arraylist of orders
-        boolean first = true;
+        boolean first1 = true;
+        double timeSinceStart1 = 180;
         for(int i = 0; i < packages.size(); i++){
-            ArrayList<Double> temp = tc.time(packages.get(i), first);
-            first = false;
-            for (int j = 0; j < temp.size(); j++) {
-            	times.add(temp.get(j));
+            tc1.time(packages.get(i), first1);
+            double lengthOfCurDelivery = packages.get(i).get(0).timeOut;
+//            System.out.println("Delivery " + i + ": ");
+            for(int j = 0; j < packages.get(i).size(); j++) {
+            	packages.get(i).get(j).timeOut = timeSinceStart1;
+            	times1.add(packages.get(i).get(j).timeOut - packages.get(i).get(j).timeIn);
+//            	System.out.println("Turn around time: " + (packages.get(i).get(j).timeOut - packages.get(i).get(j).timeIn));
             }
+            timeSinceStart1 += lengthOfCurDelivery;
+            first1 = false;
         }
-        return times;
+        return times1;
+    }
+        
+        
+    //Knapsack calculation
+    public ArrayList<Double> KnapSack(){
+        ArrayList<ArrayList<Order>> KPpackages = drone.knapsacking(orderList);
+        timeCalc tc = new timeCalc();
+        ArrayList<Double> times = new ArrayList<>();
+        //TODO: Allow calcRoute to take in an array list of orders
+        boolean first = true;
+        double timeSinceStart = 180;
+        for(int i = 0; i < KPpackages.size(); i++){
+            tc.time(KPpackages.get(i), first);
+            double lengthOfCurDelivery = KPpackages.get(i).get(0).timeOut;
+//            System.out.println("Delivery " + i + ": ");
+            for(int j = 0; j < KPpackages.get(i).size(); j++) {
+            	KPpackages.get(i).get(j).timeOut = timeSinceStart;
+            	times.add(KPpackages.get(i).get(j).timeOut - KPpackages.get(i).get(j).timeIn);
+//            	System.out.println("Turn around time: " + (packages.get(i).get(j).timeOut - packages.get(i).get(j).timeIn));
+            }
+            timeSinceStart += lengthOfCurDelivery;
+            first = false;
+        }
+    return times;
     }
 }
+
