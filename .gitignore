@@ -10,3 +10,14 @@
 /Map.class
 /Tour.class
 /TravelingSalesman.class
+launch.json
+
+FoodSettings.class
+LocationSettings.class
+MainMenu.class
+makeOrders.class
+MealSettings.class
+Results.class
+SettingsPage.class
+ShiftSettings.class
+timeCalc.class
