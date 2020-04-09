@@ -63,6 +63,8 @@ public class MainMenu extends Application {
 		start.setOnAction(e -> {
 			makeOrders os = new makeOrders();
 			results = os.simulation();
+			exportExcel excel = new exportExcel();
+			excel.printExcel(results);
 		});
 		
 		settings.setOnAction(e -> {
