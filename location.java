@@ -9,6 +9,12 @@ public class Location {
 		this.y = y;
 	}
 	
+	public Location(Location l) {
+		this.name = l.name;
+		this.x = l.x;
+		this.y = l.y;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -32,4 +38,10 @@ public class Location {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public double calcDistance(Location l2) {
+        int x = Math.abs(getX() - l2.getX());
+        int y = Math.abs(getY() - l2.getY());
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
 }

@@ -1,16 +1,17 @@
-import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.tools.DocumentationTool.Location;
+import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
 public class Map {
-	private String Locatione;
+	private String name;
 	private ArrayList<Location> waypoints;
 	
 	public Map() {
@@ -24,13 +25,14 @@ public class Map {
 		this.waypoints = waypoints;
 	}
 	
-	public Map(File collegeMap) {
+	public Map(String collegeMap) {
 		//Creates a map using a given xml file
+		try {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document cMap = dBuilder.parse(collegeMap);
-		cMap.getDocumentElement().normalize();
 		
+		cMap.getDocumentElement().normalize();
 		NodeList nList = cMap.getElementsByTagName("location");
 		name = cMap.getElementsByTagName("name").item(0).getTextContent();
 		waypoints = new ArrayList<Location>();
@@ -47,6 +49,13 @@ public class Map {
 				addLocation(locName, xCoord, yCoord);
 			}
 		}
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (SAXException sae) {
+			sae.printStackTrace();
+		}
 	}
 	
 	public String getName() {
@@ -56,15 +65,15 @@ public class Map {
 	
 	public Location getLocation(int i) {
 		//returns a requested location
-		return waypoints(i);
+		return waypoints.get(i);
 	}
 	
 	public Location getLocation(String locName) {
 		//returns a requested location
 		Location reqLoc = null;
 		for (int i = 0; i < waypoints.size(); i++) {
-			if (waypoints(i).getName() == locName) {
-				reqLoc = waypoints(i)
+			if (waypoints.get(i).getName() == locName) {
+				reqLoc = waypoints.get(i);
 			}
 		}
 		return reqLoc;
@@ -76,11 +85,17 @@ public class Map {
 	}
 	
 	public void removeLocation(String locName) {
-		boolean success;
+//		boolean success;
 		for (int i = 0; i < waypoints.size(); i++) {
-			if (waypoints(i).getName() == locName) {
-				success = waypoints.remove(i);
+			if (waypoints.get(i).getName() == locName) {
+				waypoints.remove(i);
 			}
 		}
+	}
+	
+	public Location getRandom() {
+		Random rng = new Random();
+		int randLoc = rng.nextInt(waypoints.size());
+		return waypoints.get(randLoc);
 	}
 }

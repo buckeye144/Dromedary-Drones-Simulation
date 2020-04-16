@@ -1,3 +1,4 @@
+  
 // Class to hold map coordinates for the traveling salesman problem.
 import java.util.ArrayList;
 

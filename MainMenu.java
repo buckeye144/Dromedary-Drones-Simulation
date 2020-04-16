@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,10 +8,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class MainMenu extends Application {
 	Stage menu;
 	Scene menuWindow;
+	ArrayList<ArrayList<Double>> results;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -36,11 +37,6 @@ public class MainMenu extends Application {
 		Button viewResults = new Button("View Results");
 		Button quit = new Button("Quit");
 		
-		FoodItem f = new FoodItem("Fries", 1);
-		Meal m = new Meal("Just fries", f);
-		Location l = new Location("My room", 50, 100);
-		Order o = new Order(001, "FRIES", m, l, 50);
-		
 		//Button styles
 		double BUTTON_WIDTH = 150;
 		start.setStyle("-fx-font-size:16");
@@ -55,13 +51,26 @@ public class MainMenu extends Application {
 		//VBox button list
 		menuButtons.setSpacing(10);
 		menuButtons.setPadding(new Insets(0, 20, 10, 20));
-		menuButtons.getChildren().addAll(start,settings,viewResults,quit);
+		menuButtons.getChildren().addAll(start,quit);
 		
 		//Button position
 		menuButtons.setAlignment(Pos.CENTER);
 		menuScreen.setBottom(menuButtons);
 		
 		//Button jobs
+		start.setOnAction(e -> {
+			Map m = new Map("locations.copy.xml");
+			makeOrders os = new makeOrders();
+			os.simulation(m);
+			results = new ArrayList<ArrayList<Double>>();
+			results.add(os.FIFO());
+			results.add(os.KnapSack());
+			Results r = new Results();
+			menu.setScene(r.results(this, results));
+			exportExcel excel = new exportExcel();
+			excel.printExcel(results);
+		});
+		
 		settings.setOnAction(e -> {
 			SettingsPage sp = new SettingsPage();
 			menu.setScene(sp.settingsPage(this));
@@ -69,7 +78,7 @@ public class MainMenu extends Application {
 		
 		viewResults.setOnAction(e -> {
 			Results r = new Results();
-			menu.setScene(r.results(this));
+			menu.setScene(r.results(this, results));
 		});
 		
 		quit.setOnAction(e -> {

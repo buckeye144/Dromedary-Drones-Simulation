@@ -23,7 +23,7 @@ public class XML {
 		try {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-		doc = docBuilder.parse("locations.xml");
+		doc = docBuilder.parse("locations.copy.xml");
 		items = doc.getElementsByTagName("location");
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
@@ -42,11 +42,9 @@ public class XML {
 		
 	}
 	
-	public void edit(String locName, String attr, String newAttr) {
+	public void edit(String locName, String newName, String newX, String newY) {
 		
 		try {
-			boolean test = false;
-			outerloop:
 			for (int i = 0; i < items.getLength(); i++) {
 				Node p = items.item(i);
 				if (p.getNodeType() == Node.ELEMENT_NODE) {
@@ -56,13 +54,10 @@ public class XML {
 						Node n = list.item(j);
 						if (n.getNodeType() == Node.ELEMENT_NODE) {
 							Element attribute = (Element) n;
-							if(attribute.getTextContent().matches(locName) || test) {
-								test = true;
-								if(attr.equals(n.getNodeName())) {
-									attribute.setTextContent(newAttr);
-									test = false;
-									break outerloop;
-								}
+							if(attribute.getTextContent().matches(locName)) {
+								list.item(1).setTextContent(newName);
+								list.item(3).setTextContent(newX);
+								list.item(5).setTextContent(newY);
 							}
 						}
 					}
@@ -71,7 +66,7 @@ public class XML {
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer t = tf.newTransformer();
 			DOMSource ds = new DOMSource(doc);
-			StreamResult sr = new StreamResult(new File("locations.xml"));
+			StreamResult sr = new StreamResult(new File("locations.copy.xml"));
 			t.transform(ds, sr);
 			
 		} catch (TransformerException tfe) {
