@@ -1,7 +1,7 @@
 public class Location {
 	private String name;
-	private int x;
-	private int y;
+	private int x; //Feet from origin
+	private int y; //Feet from origin
 	
 	public Location(String name, int x, int y) {
 		this.name = name;

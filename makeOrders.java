@@ -96,11 +96,9 @@ public class makeOrders{
         for(int i = 0; i < packages.size(); i++){
             tc1.time(packages.get(i), first1);
             double lengthOfCurDelivery = packages.get(i).get(0).timeOut;
-//            System.out.println("Delivery " + i + ": ");
             for(int j = 0; j < packages.get(i).size(); j++) {
             	packages.get(i).get(j).timeOut = timeSinceStart1;
             	times1.add(packages.get(i).get(j).timeOut - packages.get(i).get(j).timeIn);
-//            	System.out.println("Turn around time: " + (packages.get(i).get(j).timeOut - packages.get(i).get(j).timeIn));
             }
             timeSinceStart1 += lengthOfCurDelivery;
             first1 = false;
@@ -120,11 +118,9 @@ public class makeOrders{
         for(int i = 0; i < KPpackages.size(); i++){
             tc.time(KPpackages.get(i), first);
             double lengthOfCurDelivery = KPpackages.get(i).get(0).timeOut;
-//            System.out.println("Delivery " + i + ": ");
             for(int j = 0; j < KPpackages.get(i).size(); j++) {
             	KPpackages.get(i).get(j).timeOut = timeSinceStart;
             	times.add(KPpackages.get(i).get(j).timeOut - KPpackages.get(i).get(j).timeIn);
-//            	System.out.println("Turn around time: " + (packages.get(i).get(j).timeOut - packages.get(i).get(j).timeIn));
             }
             timeSinceStart += lengthOfCurDelivery;
             first = false;
