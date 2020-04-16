@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Map>
+	<name>Grove City College</name>
+
+	<location>
+		<locName>SAC</locName>
+		<xCoord>0</xCoord>
+		<yCoord>0</yCoord>
+	</location>
+
+	<location>
+		<locName>Hall of Arts and Letters</locName>
+		<xCoord>173</xCoord>
+		<yCoord>-90</yCoord>
+	</location>
+
+	<location>
+		<locName>Hoyt Hall</locName>
+		<xCoord>-168</xCoord>
+		<yCoord>-78</yCoord>
+	</location>
+
+	<location>
+		<locName>STEM Building</locName>
+		<xCoord>-170</xCoord>
+		<yCoord>97</yCoord>
+	</location>
+
+	<location>
+		<locName>Physical Learning Center</locName>
+		<xCoord>136</xCoord>
+		<yCoord>184</yCoord>
+	</location>
+
+	<location>
+		<locName>Pew Fine Arts Center</locName>
+		<xCoord>153</xCoord>
+		<yCoord>-677</yCoord>
+	</location>
+
+	<location>
+		<locName>Hicks Hall</locName>
+		<xCoord>0</xCoord>
+		<yCoord>-457</yCoord>
+	</location>
+
+	<location>
+		<locName>Henry Buhl Library</locName>
+		<xCoord>-376</xCoord>
+		<yCoord>-235</yCoord>
+	</location>
+
+	<location>
+		<locName>Lincoln Hall</locName>
+		<xCoord>-655</xCoord>
+		<yCoord>-121</yCoord>
+	</location>
+
+	<location>
+		<locName>Hopeman Hall</locName>
+		<xCoord>-592</xCoord>
+		<yCoord>-298</yCoord>
+	</location>
+
+	<location>
+		<locName>Rockwell</locName>
+		<xCoord>-386</xCoord>
+		<yCoord>221</yCoord>
+	</location>
+
+	<location>
+		<locName>Memorial Hall</locName>
+		<xCoord>-974</xCoord>
+		<yCoord>-50</yCoord>
+	</location>
+
+	<location>
+		<locName>Ketler Hall</locName>
+		<xCoord>-659</xCoord>
+		<yCoord>189</yCoord>
+	</location>
+
+	<location>
+		<locName>Zerbe Health Center</locName>
+		<xCoord>-831</xCoord>
+		<yCoord>-211</yCoord>
+	</location>
+
+	<location>
+		<locName>Crawford</locName>
+		<xCoord>-962</xCoord>
+		<yCoord>327</yCoord>
+	</location>
+
+	<location>
+		<locName>MAP</locName>
+		<xCoord>-380</xCoord>
+		<yCoord>665</yCoord>
+	</location>
+
+	<location>
+		<locName>Harbison Chapel</locName>
+		<xCoord>-756</xCoord>
+		<yCoord>605</yCoord>
+	</location>
+
+	<location>
+		<locName>Rathburn</locName>
+		<xCoord>-572</xCoord>
+		<yCoord>908</yCoord>
+	</location>
+
+	<location>
+		<locName>President's house</locName>
+		<xCoord>-1186</xCoord>
+		<yCoord>-97</yCoord>
+	</location>
+
+	<location>
+		<locName>Hellen Harker</locName>
+		<xCoord>-270</xCoord>
+		<yCoord>351</yCoord>
+	</location>
+
+	<location>
+		<locName>Mary Ethel Pew</locName>
+		<xCoord>-133</xCoord>
+		<yCoord>621</yCoord>
+	</location>
+
+	<location>
+		<locName>Baseball Field</locName>
+		<xCoord>-258</xCoord>
+		<yCoord>1177</yCoord>
+	</location>
+
+	<location>
+		<locName>Soccer Fields</locName>
+		<xCoord>240</xCoord>
+		<yCoord>1047</yCoord>
+	</location>
+
+	<location>
+		<locName>Softball Field</locName>
+		<xCoord>-864</xCoord>
+		<yCoord>1271</yCoord>
+	</location>
+
+	<location>
+		<locName>Robert E. Thorn Field</locName>
+		<xCoord>-1777</xCoord>
+		<yCoord>679</yCoord>
+	</location>
+
+	<location>
+		<locName>Tennis Courts</locName>
+		<xCoord>-1860</xCoord>
+		<yCoord>1107</yCoord>
+	</location>
+
+	<location>
+		<locName>Colonial Apartments</locName>
+		<xCoord>-2133</xCoord>
+		<yCoord>821</yCoord>
+	</location>
+
+	<location>
+		<locName>Carnegie Alumni</locName>
+		<xCoord>-2354</xCoord>
+		<yCoord>829</yCoord>
+	</location>
+
+	<location>
+		<locName>Colonial Student Parking</locName>
+		<xCoord>-1576</xCoord>
+		<yCoord>1215</yCoord>
+	</location>
+
+	<location>
+		<locName>Guest Parking</locName>
+		<xCoord>-1817</xCoord>
+		<yCoord>0</yCoord>
+	</location>
+
+	<location>
+		<locName>South Student Lot</locName>
+		<xCoord>670</xCoord>
+		<yCoord>-482</yCoord>
+	</location>
+
+	<location>
+		<locName>North Student Lot</locName>
+		<xCoord>670</xCoord>
+		<yCoord>675</yCoord>
+	</location>
+
+</Map>
