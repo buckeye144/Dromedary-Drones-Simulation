@@ -56,8 +56,8 @@ public class Tour {
 	
 	public void swapLocs() {
 		// Assume the start and end locations are fixed (e.g. the SAC)
-		int a = (rng.nextInt() % (sizeOfTour - 2)) + 1;
-		int b = (rng.nextInt() % (sizeOfTour - 2)) + 1;
+		int a = (Math.abs(rng.nextInt()) % (sizeOfTour - 2)) + 1;  // For some reason, this expression can generate negative numbers
+		int b = (Math.abs(rng.nextInt()) % (sizeOfTour - 2)) + 1;
 		previousTour = copy();
 		Location x = locations.get(a);
 		Location y = locations.get(b);

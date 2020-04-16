@@ -252,12 +252,16 @@ public class TravelingSalesman {
 		// First things first, get a list of Locations from orders.
 		Tour tour = new Tour();
 		ArrayList<Location> locs = new ArrayList<>();
+		locs.add(sac);
+		tour.addLocation(sac);
 		for (Order o : orders) {
 			if (!locs.contains(o.destination)) {  // This comparison might not work
 				locs.add(o.destination);
 				tour.addLocation(o.destination);
 			}
 		}
+		locs.add(sac);
+		tour.addLocation(sac);
 		
 		// simulateAnnealing() from the webpage
 		double bestDistance = tour.getDistance();
