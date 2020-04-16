@@ -68,7 +68,6 @@ public class Results {
 		GridPane.setConstraints(KPAverageLabel, 0, 1);
 		GridPane.setConstraints(back, 0, 2);
 		
-		
 		subRoot.getChildren().addAll(FIFOAverageLabel,KPAverageLabel,back);
 		
 		VBox root = new VBox();

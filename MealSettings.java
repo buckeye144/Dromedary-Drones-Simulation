@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 public class MealSettings {
 
-	
+	//TODO: Make food item list have +/- 
 	int test = 0;
 	
 public VBox meals(MainMenu mm) {

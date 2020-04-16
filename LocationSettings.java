@@ -143,10 +143,10 @@ public class LocationSettings {
 					|| y.getText().matches("")) {
 				confirm.setText("Invalid name/coordinates");
 			}
-			else if (!x.getText().matches("[0-9]*") || !y.getText().matches("[0-9]*")) {
+			else if (!x.getText().matches("-?[0-9]*") || !y.getText().matches("-?[0-9]*")) {
 				confirm.setText("Invalid name/coordinates");
 			}
-			else if (name.getText() != null && x.getText() != null && y.getText() != null) {
+			else {
 				String current = locations.getSelectionModel().selectedItemProperty().get();
 				int index = locations.getSelectionModel().getSelectedIndex();
 				xml.edit(current, name.getText(), x.getText(), y.getText());
