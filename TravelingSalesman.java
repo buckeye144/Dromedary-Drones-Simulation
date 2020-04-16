@@ -245,8 +245,8 @@ public class TravelingSalesman {
 		// Simulated Annealing method, ported from https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman
 		
 		Location sac = new Location("SAC", 0, 0);
-		double temperature = 100.0;  // Set this
-		double coolingRate = 0.1;  // Set this
+		double temperature = 1000.0;  // Set this
+		double coolingRate = 0.9;  // Set this
 		int numberOfIterations = 50;  // I don't know what a good value for this is
 		
 		// First things first, get a list of Locations from orders.
@@ -291,5 +291,4 @@ public class TravelingSalesman {
 		}
 		return results;
 	}
-
 }
