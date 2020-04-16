@@ -5,7 +5,7 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 
 public class SettingsPage {
 
-	public Scene settingsPage(MainMenu mm) {
+	public Scene settingsPage(MainMenu mm, Map map) {
 		
 		FoodSettings fs = new FoodSettings();
 		MealSettings ms = new MealSettings();
@@ -20,7 +20,7 @@ public class SettingsPage {
 		Tab locations = new Tab("Locations");
 		
 		food.setContent(fs.food(mm));
-		locations.setContent(ls.locations(mm));
+		locations.setContent(ls.locations(mm, map));
 		meals.setContent(ms.meals(mm));
 		shift.setContent(ss.shiftSettings(mm));
 		
@@ -37,4 +37,3 @@ public class SettingsPage {
 //		Food page: modify existing ones
 //		Locations page: modify locations
 //		Meal page: add/remove/modify meals, change probabilities
-//		Remove orders tab

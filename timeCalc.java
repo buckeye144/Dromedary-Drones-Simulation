@@ -1,32 +1,32 @@
-import java.util.Stack;
 import java.util.ArrayList;
 
 public class timeCalc {
 	
-	public ArrayList<Double> time (ArrayList<Order> orders, boolean firstLeave) {
-		ArrayList<Double> times = new ArrayList<>();
+	public void time (ArrayList<Order> orders, boolean firstLeave) {
 		TravelingSalesman tsp = new TravelingSalesman();
 		ArrayList<Connection> bestTour = tsp.calcRoute(orders);
+		ArrayList<Order> orderCopy = new ArrayList<Order>(orders);
 		double time = 0.0;
 		
 		if (!firstLeave) {
-			time = time + 3;
+			time = time + 180;
 		}
 		
 		for(int i = 0; i < bestTour.size(); i++) {
-			time = time + bestTour.get(i).getDistance()/1760.0;
-			time = time + 0.5;	//Down time
-		}
-		System.out.println(bestTour.size());
-		for (int i = 0 ; i < orders.size(); i++) {
-			if ((orders.get(i).destination.getX() ==
-					bestTour.get(i).getLoc1().getX()) && 
-					(orders.get(i).destination.getY() == bestTour.get(i).getLoc1().getY())) {
-				orders.remove(i);
-				times.add(time);
-			}
+			time = time + bestTour.get(i).getDistance()/29.333;
+			time = time + 30;	//Drop off
 		}
 		
+		for (int i = 0 ; i < orderCopy.size(); i++) {
+			orders.get(i).timeOut = time;
+//			if ((orderCopy.get(i).destination.getX() ==
+//					bestTour.get(i).getLoc1().getX()) && 
+//					(orderCopy.get(i).destination.getY() == bestTour.get(i).getLoc1().getY())) {
+//				orderCopy.remove(i);
+//				orders.get(i).timeOut = time;
+//				times.add(time);
+//			}
+		}
 		
 		
 		
@@ -49,6 +49,5 @@ public class timeCalc {
 //			}
 //		}
 //		System.out.println(times);
-		return times;
 	}
 }

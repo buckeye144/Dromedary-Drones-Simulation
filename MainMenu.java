@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,11 +8,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class MainMenu extends Application {
 	Stage menu;
 	Scene menuWindow;
-	ArrayList<Double> results;
+	ArrayList<ArrayList<Double>> results;
+	makeOrders os;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -21,6 +20,9 @@ public class MainMenu extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
 		menu = primaryStage;
+		
+		os = new makeOrders();
+		Map m = new Map("locations.copy.xml");
 		
 //		menu.setOnCloseRequest(e -> {
 //			e.consume();
@@ -53,7 +55,7 @@ public class MainMenu extends Application {
 		//VBox button list
 		menuButtons.setSpacing(10);
 		menuButtons.setPadding(new Insets(0, 20, 10, 20));
-		menuButtons.getChildren().addAll(start,settings,viewResults,quit);
+		menuButtons.getChildren().addAll(start,settings,quit);
 		
 		//Button position
 		menuButtons.setAlignment(Pos.CENTER);
@@ -61,18 +63,19 @@ public class MainMenu extends Application {
 		
 		//Button jobs
 		start.setOnAction(e -> {
-			Map m = new Map("locations.copy.xml");
-			makeOrders os = new makeOrders();
-			results = os.simulation(m);
-			System.out.println("\nResults:");
-			for(int i = 0; i < results.size(); i++) {
-				System.out.println(results.get(i));
-			}
+			os.simulation(m);
+			results = new ArrayList<ArrayList<Double>>();
+			results.add(os.FIFO());
+			results.add(os.KnapSack());
+			Results r = new Results();
+			menu.setScene(r.results(this, results));
+			exportExcel excel = new exportExcel();
+			excel.printExcel(results);
 		});
 		
 		settings.setOnAction(e -> {
 			SettingsPage sp = new SettingsPage();
-			menu.setScene(sp.settingsPage(this));
+			menu.setScene(sp.settingsPage(this, m));
 		});
 		
 		viewResults.setOnAction(e -> {
@@ -91,7 +94,7 @@ public class MainMenu extends Application {
 		
 		menu.setTitle("Drone Delivery Simulation");
 		menu.setScene(menuWindow);
-		menu.setResizable(false);
+		menu.setResizable(true);
 		menu.show();
 	}
 	

@@ -11,8 +11,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
 public class Map {
-	private String name;
-	private ArrayList<Location> waypoints;
+	String name;
+	ArrayList<Location> waypoints;
 	
 	public Map() {
 		String name = "";

@@ -68,11 +68,11 @@ public class TravelingSalesman {
 //		System.out.println("\n");
 //		
 		//Print location stacks
-		System.out.println("\nLocation stack size: " + locationStack.size());
-		for (int i = 0; i < locationStack.size(); i++) {
-			System.out.println(locationStack.get(i).getName());
-		}
-		System.out.println("\n\n");
+//		System.out.println("\nLocation stack size: " + locationStack.size());
+//		for (int i = 0; i < locationStack.size(); i++) {
+//			System.out.println(locationStack.get(i).getName());
+//		}
+//		System.out.println("\n\n");
 		
 //		while (!locationStack.isEmpty()) {
 //			System.out.println("=============================");
@@ -131,16 +131,17 @@ public class TravelingSalesman {
 		
 		
 		//Print out current connections
-		System.out.println("Current Connections:");
+//		System.out.println("Current Connections:");
 		for(int i = 0; i < connections.size(); i++) {
-			System.out.print("1: " + connections.get(i).getLoc1().getName() + " -> " +
-					"2: " + connections.get(i).getLoc2().getName());
-			System.out.println(":   " + connections.get(i).getDistance());
+//			System.out.print("1: " + connections.get(i).getLoc1().getName() + " -> " +
+//					"2: " + connections.get(i).getLoc2().getName());
+//			System.out.println(":   " + connections.get(i).getDistance());
 		}//end for
 		
 		Connection temp = new Connection(sac, sac);		//temporary connection
 		
 		double shortest = connections.get(0).getDistance();
+		
 		//For loop finds the shortest distance from the SAC to next location
 		for(int i = 0; i < connections.size(); i++) {
 			if(Double.compare(connections.get(i).getDistance(), shortest) < 0 && 						
@@ -154,9 +155,10 @@ public class TravelingSalesman {
 				}//end if
 			}//end if
 		}//end for
+		
 		currentTour.add(temp);
-		System.out.println("Added: " + temp.getLoc2().getName() + " -> " +
-				temp.getLoc1().getName());
+//		System.out.println("Added: " + temp.getLoc2().getName() + " -> " +
+//				temp.getLoc1().getName());
 		
 
 		//Find all other destinations
@@ -179,14 +181,14 @@ public class TravelingSalesman {
 				index++;
 			}
 			String nextPos = currentTour.get(currentTour.size() - 1).getLoc1().getName();
-			System.out.println("\n\nLast shortest: " + shortest);
-			System.out.println("Last Position: " + lastPos);
-			System.out.println("Current Position: " + nextPos);
-			System.out.println("Connection update:");
+//			System.out.println("\n\nLast shortest: " + shortest);
+//			System.out.println("\n\nLast Position: " + lastPos);
+//			System.out.println("Current Position: " + nextPos);
+//			System.out.println("Connection update:");
 			for(int i = 0; i < connections.size(); i++) {
-				System.out.print("1: " + connections.get(i).getLoc1().getName() + " -> " +
-						"2: " + connections.get(i).getLoc2().getName());
-				System.out.println(":   " + connections.get(i).getDistance());
+//				System.out.print("1: " + connections.get(i).getLoc1().getName() + " -> " +
+//						"2: " + connections.get(i).getLoc2().getName());
+//				System.out.println(":   " + connections.get(i).getDistance());
 			}//end for
 			
 			//Find the rest of the locations
@@ -210,8 +212,8 @@ public class TravelingSalesman {
 				}
 			}//end for
 			currentTour.add(temp);
-			System.out.println("Added: " + temp.getLoc2().getName() + " -> " +
-					temp.getLoc1().getName());
+//			System.out.println("Added: " + temp.getLoc2().getName() + " -> " +
+//					temp.getLoc1().getName());
 		}//end while
 		if(!feasible(currentTour.get(currentTour.size() - 1).getDistance())) {
 			Connection fail = new Connection(sac, sac);
@@ -221,10 +223,10 @@ public class TravelingSalesman {
 			currentTour.add(last);
 		}
 		
-		System.out.println("\n\nCurrent Tour: " + currentTour.size());
-		for(int i = 0; i < currentTour.size(); i++) {
-			System.out.println(currentTour.get(i).getLoc1().getName());
-		}//end for
+//		System.out.println("\n\nCurrent Tour: " + currentTour.size());
+//		for(int i = 0; i < currentTour.size(); i++) {
+//			System.out.println(currentTour.get(i).getLoc1().getName());
+//		}//end for
 		return currentTour;
 	}//end calcRoute method
 	

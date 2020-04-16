@@ -1,112 +1,115 @@
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class LocationSettings {
+	
+	ListView<String> locations;
+	TextField name;
+	TextField x;
+	TextField y;
+	ObservableList<String> items;
+	XML xml;
 
-	public VBox locations(MainMenu mm) {
+	public VBox locations(MainMenu mm, Map map) {
 		
-		XML xml = new XML();
+		xml = new XML();
 		GridPane grid = new GridPane();
+		GridPane grid2 = new GridPane();
 		VBox page = new VBox();
-		ListView<String> locations = new ListView<String>();
-		ObservableList<String> items = FXCollections.observableArrayList();
-		TextField name = new TextField();
-		TextField x = new TextField();
-		TextField y = new TextField();
+		locations = new ListView<String>();
+		items = FXCollections.observableArrayList();
+		name = new TextField();
+		x = new TextField();
+		y = new TextField();
 		TextField removeLocation = new TextField();
-		TextField editLocation = new TextField();
 		Label title = new Label("List of current locations");
 		Label addLabel = new Label("Add/edit a location");
 		Label removeLabel = new Label("Remove a location");
 		Label confirm = new Label();
 		Label confirm2 = new Label();
+		Label locationsName = new Label("Name: ");
+		Label locationsX = new Label("X Coordinate: ");
+		Label locationsY = new Label("Y Coordinate: ");
 		Button add = new Button("Add");
 		Button remove = new Button("Remove");
 		Button update = new Button("Update");
 		Button back = new Button("Back");
-		ToggleGroup group = new ToggleGroup();
-		RadioButton r1 = new RadioButton("Location name");
-		RadioButton r2 = new RadioButton("X coordinate");
-		RadioButton r3 = new RadioButton("Y coordinate");
 		
-		for(int i = 0; i < xml.items.getLength(); i++) {
-			Node p = xml.items.item(i);
-			if (p.getNodeType() == Node.ELEMENT_NODE) {
-				Element q = (Element) p;
-				NodeList r = q.getChildNodes();
-				items.add(r.item(1).getTextContent());
-			}
-		}
-		
-		r1.setToggleGroup(group);
-		r2.setToggleGroup(group);
-		r3.setToggleGroup(group);
-		
+		//Button/text field styles
+		addLabel.setStyle("-fx-font-size:16");
+		name.setPromptText("Enter name of location");
+		name.setStyle("-fx-font-size:16");
+		name.setMaxWidth(200);
+		name.setMinHeight(30);
+		x.setPromptText("Enter X coordinate");
+		x.setStyle("-fx-font-size:16");
+		x.setMaxWidth(200);
+		x.setMinHeight(30);
+		y.setPromptText("Enter Y coordinate");
+		y.setStyle("-fx-font-size:16");
+		y.setMaxWidth(200);
+		y.setMinHeight(30);
+		removeLabel.setStyle("-fx-font-size:16");
+		removeLocation.setPromptText("Enter name of location");
+		removeLocation.setStyle("-fx-font-size:16");
+		removeLocation.setMinWidth(200);
+		removeLocation.setMaxHeight(30);
+		locations.setStyle("-fx-font-size:20");
+		locations.setItems(items);
+		locations.setMinWidth(500);
+		locations.setMinHeight(mm.menu.getHeight() / 2);
 		back.setStyle("-fx-font-size:16");
 		back.setMaxWidth(150);
 		
-		name.setPromptText("Enter name of location");
-		x.setPromptText("Enter X coordinate");
-		y.setPromptText("Enter Y coordinate");
-		removeLocation.setPromptText("Enter name of location");
-		editLocation.setPromptText("Enter changes");
+		for(int i = 0; i < map.waypoints.size(); i++) {
+			items.add(map.waypoints.get(i).getName());
+		}
 		
-		locations.setStyle("-fx-font-size:16");
-		locations.setItems(items);
-		locations.setMaxSize(300, 1000);
-		locations.getSelectionModel().selectedItemProperty().addListener(e-> {
-			name.setText(locations.getSelectionModel().getSelectedItem());
-			outerloop:
-			for (int i = 0; i < xml.items.getLength(); i++) {
-				Node p = xml.items.item(i);
-				if (p.getNodeType() == Node.ELEMENT_NODE) {
-					Element food = (Element) p;
-					NodeList list = food.getChildNodes();
-					for (int j = 0; j < list.getLength(); j++) {
-						Node n = list.item(j);
-						if (n.getNodeType() == Node.ELEMENT_NODE) {
-							Element attribute = (Element) n;
-							if(attribute.getTextContent().matches(locations.getSelectionModel().getSelectedItem())) {
-								x.setText(list.item(3).getTextContent());
-								y.setText(list.item(5).getTextContent());
-								break outerloop;
-							}
-						}
-					}
-				}
+		locations.getSelectionModel().selectedItemProperty().addListener(e ->{
+			int index = locations.getSelectionModel().getSelectedIndex();
+			try {
+				name.setText(map.waypoints.get(index).getName());
+				x.setText(Integer.toString(map.waypoints.get(index).getX()));
+				y.setText(Integer.toString(map.waypoints.get(index).getY()));
+			} catch (Exception e1) {
 			}
 		});
+		
+		locationsName.setStyle("-fx-font-size:20");
+		locationsX.setStyle("-fx-font-size:20");
+		locationsY.setStyle("-fx-font-size:20");
+		
+		grid2.setPadding(new Insets(10, 10, 10, 10));
+		grid2.setVgap(5);
+		grid2.setHgap(5);
+		GridPane.setConstraints(addLabel, 0, 0);
+		GridPane.setConstraints(name, 0, 1);
+		GridPane.setConstraints(x, 0, 2);
+		GridPane.setConstraints(y, 0, 3);
+		GridPane.setConstraints(confirm, 0, 4);
+		GridPane.setConstraints(removeLabel, 0, 6);
+		GridPane.setConstraints(removeLocation, 0, 7);
+		GridPane.setConstraints(confirm2, 0, 8);
+		GridPane.setConstraints(add, 1, 2);
+		GridPane.setConstraints(update, 1, 3);
+		GridPane.setConstraints(remove, 1, 7);
+		grid2.getChildren().addAll(addLabel,name,x,y,confirm,add,update,
+				removeLabel,removeLocation,confirm2,remove);
 		
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(5);
 		grid.setHgap(5);
-		GridPane.setConstraints(locations, 0, 0);
-		GridPane.setConstraints(addLabel, 1, 1);
-		GridPane.setConstraints(name, 1, 2);
-		GridPane.setConstraints(x, 1, 3);
-		GridPane.setConstraints(y, 1, 4);
-		GridPane.setConstraints(confirm, 1, 5);
-		GridPane.setConstraints(add, 2, 2);
-		GridPane.setConstraints(update, 2, 3);
-		GridPane.setConstraints(removeLabel, 5, 1);
-		GridPane.setConstraints(removeLocation, 5, 2);
-		GridPane.setConstraints(confirm2, 5, 3);
-		GridPane.setConstraints(remove, 6, 2);
-		
-		grid.getChildren().addAll(addLabel,removeLabel,name,x,y,
-				add,remove,removeLocation,confirm,confirm2,update);
+		GridPane.setConstraints(title, 0, 0);
+		GridPane.setConstraints(locations, 0, 1);
+		GridPane.setConstraints(grid2, 1, 1);
+		grid.getChildren().addAll(title,locations,grid2);
 		
 		//TODO: Implement XML adding
 		//Currently a temporary change, if program shuts down, changes are lost
@@ -121,7 +124,8 @@ public class LocationSettings {
 				confirm.setText("Invalid name/coordinates");
 			}
 			//Adds new location item
-			else if (name.getText() != null && x.getText() != null && y.getText() != null) {
+			else if (x.getText().matches("[^//d]") || x.getText().contains("-") ||
+					y.getText().matches("[^//d]") || y.getText().contains("-")) {
 				Location l = new Location(name.getText(), Integer.parseInt(x.getText()),
 						Integer.parseInt(y.getText()));
 				items.add(l.getName());
@@ -144,7 +148,15 @@ public class LocationSettings {
 			}
 			else if (name.getText() != null && x.getText() != null && y.getText() != null) {
 				String current = locations.getSelectionModel().selectedItemProperty().get();
+				int index = locations.getSelectionModel().getSelectedIndex();
 				xml.edit(current, name.getText(), x.getText(), y.getText());
+				map.waypoints.get(index).setName(name.getText());
+				map.waypoints.get(index).setX(Integer.parseInt(x.getText()));
+				map.waypoints.get(index).setY(Integer.parseInt(y.getText()));
+				items.clear();
+				for(int i = 0; i < map.waypoints.size(); i++) {
+					items.add(map.waypoints.get(i).getName());
+				}
 				confirm.setText("Updated!");
 				name.clear();
 				x.clear();
@@ -156,16 +168,24 @@ public class LocationSettings {
 		remove.setOnAction(e -> {
 			//Can't remove nothing
 			if (removeLocation.getText().matches("")) {
-				confirm2.setText("Invalid food item name");
+				confirm2.setText("Invalid location name");
 			}
-			//Search for food item
+			//Search for location
 			else {
-				//Food item found
-				if(items.contains(removeLocation.getText())) {
-					items.remove(removeLocation.getText());
-					confirm2.setText("Removed " + removeLocation.getText());
-				} else {
-					confirm2.setText("Location not found");
+				//Found location
+				for(int i = 0; i < map.waypoints.size(); i++) {
+					if(map.waypoints.get(i).getName().matches(removeLocation.getText())) {
+						map.waypoints.remove(i);
+						items.clear();
+						for(int j = 0; j < map.waypoints.size(); j++) {
+							items.add(map.waypoints.get(j).getName());
+						}
+						confirm2.setText("Removed " + removeLocation.getText());
+						removeLocation.clear();
+						break;
+					} else {
+						confirm2.setText("Location not found");
+					}
 				}
 			}
 		});
@@ -176,7 +196,7 @@ public class LocationSettings {
 		
 		title.setStyle("-fx-font-size:20");
 		page.setSpacing(10);
-		page.getChildren().addAll(title,locations,grid,back);
+		page.getChildren().addAll(grid,back);
 		
 		return page;
 	}
