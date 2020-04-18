@@ -99,7 +99,7 @@ public class MainMenu extends Application {
 	}
 	
 	private void closeProgram() throws Exception {
-		boolean answer = ConfirmBox.display();
+		boolean answer = true; //ConfirmBox.display();
 		if (answer) {
 			menu.close();
 		}

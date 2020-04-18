@@ -15,8 +15,8 @@ public class Results {
 		
 		final NumberAxis xAxis = new NumberAxis();
 		final NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel("Time");
-		yAxis.setLabel("Number of Orders");
+		xAxis.setLabel("Order #");
+		yAxis.setLabel("Turn Around Time (minutes)");
 		final LineChart<Number,Number> lineChart =
 				new LineChart<Number,Number>(xAxis,yAxis);
 		Button back = new Button("Back");

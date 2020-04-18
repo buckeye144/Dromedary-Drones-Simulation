@@ -1,24 +1,3 @@
-/Drone.class
-/FoodItem.class
-/Location.class
-/Meal.class
-/Order.class
-/OrderTesting.class
-/Connection.class
-/Coord.class
-/MainClass.class
-/Map.class
-/Tour.class
-/TravelingSalesman.class
 launch.json
 
-FoodSettings.class
-LocationSettings.class
-MainMenu.class
-makeOrders.class
-MealSettings.class
-Results.class
-SettingsPage.class
-ShiftSettings.class
-timeCalc.class
 *.class
