@@ -11,8 +11,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
 public class Map {
-	private String name;
-	private ArrayList<Location> waypoints;
+	String name;
+	ArrayList<Location> waypoints;
 	
 	public Map() {
 		String name = "";
@@ -79,14 +79,13 @@ public class Map {
 		return reqLoc;
 	}
 	
-	//Adds a Location to the map with a specified named and coordinates
 	public void addLocation(String locName, int x, int y) {
 		Location newLoc = new Location(locName, x, y);
 		boolean success = waypoints.add(newLoc);
 	}
 	
-	//Removes a specified Location
 	public void removeLocation(String locName) {
+//		boolean success;
 		for (int i = 0; i < waypoints.size(); i++) {
 			if (waypoints.get(i).getName() == locName) {
 				waypoints.remove(i);
@@ -94,7 +93,6 @@ public class Map {
 		}
 	}
 	
-	//Returns a random location;
 	public Location getRandom() {
 		Random rng = new Random();
 		int randLoc = rng.nextInt(waypoints.size());

@@ -10,10 +10,13 @@ public class makeOrders{
 	Meal twoBurgers;
 	ObservableList<Meal> meals;
 	ArrayList<Order> orderList;
+	ArrayList<FoodItem> foodList;
 	Drone drone;
 	
 	public makeOrders() {
 		//Make the default meals
+		meals = FXCollections.observableArrayList();
+		foodList = new ArrayList<FoodItem>();
 		FoodItem hamburger = new FoodItem("hamburger", 6);
         FoodItem fries = new FoodItem("fries", 4);
         FoodItem drink = new FoodItem("drink", 14);
@@ -37,6 +40,13 @@ public class makeOrders{
         meal3.add(hamburger);
         meal3.add(fries);
         twoBurgers = new Meal("twoBurgers", meal3, .15);
+        foodList.add(hamburger);
+        foodList.add(fries);
+        foodList.add(drink);
+        meals.add(typical);
+        meals.add(twoBurgerMeal);
+        meals.add(burgerFries);
+        meals.add(twoBurgers);
 	     
 	}
     public void simulation(Map map) {
@@ -64,16 +74,17 @@ public class makeOrders{
         //1st hour
         Random r = new Random();
         int[] shiftOrders = {15, 17, 22, 15};
-
         for(int i = 0; i < shiftOrders.length; i++){
+            int minuteMarker = 0;
             for(int j = 0; j < shiftOrders[i]; j++){
                 double orderNum = r.nextDouble();
                 double prevProbability = 0.0;
                 for(int o = 0; o < possOrders.size(); o++){
                     if(orderNum < possOrders.get(o).meals.probability + prevProbability) {
                         Order temp = new Order(possOrders.get(o));
-                        //TODO: add random location
-                        temp.timeIn = i * 60 + (j * 4) % 60;
+                        temp.timeIn = i * 60 + minuteMarker;
+                        minuteMarker += r.nextInt(Math.max((int)(60 /shiftOrders[i]),2));
+                        if(minuteMarker > 59) minuteMarker = 59;
                         temp.destination = map.getRandom();
                         orderList.add(temp);
                         break;
@@ -87,45 +98,113 @@ public class makeOrders{
         //Drone deliver groupings with FIFO
     public ArrayList<Double> FIFO() {
         drone = new Drone();
-        ArrayList<ArrayList<Order>> packages = drone.FIFO(orderList);
-        timeCalc tc1 = new timeCalc();
-        ArrayList<Double> times1 = new ArrayList<>();
-        //TODO: Allow calcRoute to take in an arraylist of orders
-        boolean first1 = true;
-        double timeSinceStart1 = 180;
-        for(int i = 0; i < packages.size(); i++){
-            tc1.time(packages.get(i), first1);
-            double lengthOfCurDelivery = packages.get(i).get(0).timeOut;
-            for(int j = 0; j < packages.get(i).size(); j++) {
-            	packages.get(i).get(j).timeOut = timeSinceStart1;
-            	times1.add(packages.get(i).get(j).timeOut - packages.get(i).get(j).timeIn);
+        ArrayList<Double> turnAroundTime = new ArrayList<>();
+        ArrayList<Order> queue = new ArrayList<>();
+        timeCalc tc = new timeCalc();
+        int orderNum = 0;//tracks which orders have been shipped
+        double travelTime = 0.0;
+        //go through the order list minute by minute and once you have at least two orders send the drone out
+        int curMin = 0;
+        while(orderNum < orderList.size()){ //how many minutes there are in the shift
+            //TODO: check and make sure all the orders are delivered
+            while(orderNum < orderList.size() && orderList.get(orderNum).timeIn < curMin){ //add all the orders that have come in before the current time
+                queue.add(orderList.get(orderNum));
+                orderNum++;
             }
-            timeSinceStart1 += lengthOfCurDelivery;
-            first1 = false;
+            if(queue.size() > 1){ //send out the drone
+                //calculate how large the queue is
+                int queueSize = 0;
+                for(int i = 0; i < queue.size(); i++){
+                    queueSize += drone.OrderCapacity(queue.get(i));
+                }
+                //check if the whole queue can fit on the drone, if so send it all
+                if(queueSize <= drone.maxCapacity){
+                    travelTime = tc.time(queue, true);
+                    for(int i = 0; i < queue.size(); i++){
+                        turnAroundTime.add((double)(curMin + travelTime - queue.get(i).timeIn));
+                    }
+                    queue.clear();
+                    curMin += travelTime;
+                }
+                else{//split up the queu by FIFO and delver it all
+                    ArrayList<ArrayList<Order>> megaQueue = drone.FIFO(queue);
+                    //deleiver all the batches
+                    for(int smallQueue = 0; smallQueue < megaQueue.size(); smallQueue++){
+                        travelTime = tc.time(megaQueue.get(smallQueue), true);
+                        for(int i = 0; i < megaQueue.get(smallQueue).size(); i++){
+                            turnAroundTime.add((double)(curMin + travelTime - megaQueue.get(smallQueue).get(i).timeIn));
+                        }
+                        curMin += travelTime;
+                    }
+                    queue.clear();
+                }
+                
+            }
+            else{ //queue isn't big enough
+                curMin++;
+            }
         }
-        return times1;
+//        System.out.println("Turn Around Times (FIFO): ");
+//        for(int i = 0; i < Math.min(turnAroundTime.size(), orderList.size()); i++){
+//            System.out.println("\tTime in: " + orderList.get(i).timeIn + "\n\tTOT: " + turnAroundTime.get(i));
+//        }
+        return turnAroundTime;
     }
         
         
     //Knapsack calculation
     public ArrayList<Double> KnapSack(){
-        ArrayList<ArrayList<Order>> KPpackages = drone.knapsacking(orderList);
+        drone = new Drone();
+        ArrayList<Double> turnAroundTime = new ArrayList<>();
+        ArrayList<Order> queue = new ArrayList<>();
         timeCalc tc = new timeCalc();
-        ArrayList<Double> times = new ArrayList<>();
-        //TODO: Allow calcRoute to take in an array list of orders
-        boolean first = true;
-        double timeSinceStart = 180;
-        for(int i = 0; i < KPpackages.size(); i++){
-            tc.time(KPpackages.get(i), first);
-            double lengthOfCurDelivery = KPpackages.get(i).get(0).timeOut;
-            for(int j = 0; j < KPpackages.get(i).size(); j++) {
-            	KPpackages.get(i).get(j).timeOut = timeSinceStart;
-            	times.add(KPpackages.get(i).get(j).timeOut - KPpackages.get(i).get(j).timeIn);
+        int orderNum = 0;//tracks which orders have been shipped
+        double travelTime = 0.0;
+        //go through the order list minute by minute and once you have at least two orders send the drone out
+        int curMin = 0;
+        while(orderNum < orderList.size()){ //how many minutes there are in the shift
+            //TODO: check and make sure all the orders are delivered
+            while(orderNum < orderList.size() && orderList.get(orderNum).timeIn < curMin){ //add all the orders that have come in before the current time
+                queue.add(orderList.get(orderNum));
+                orderNum++;
             }
-            timeSinceStart += lengthOfCurDelivery;
-            first = false;
+            if(queue.size() > 1){ //send out the drone
+                //calculate how large the queue is
+                int queueSize = 0;
+                for(int i = 0; i < queue.size(); i++){
+                    queueSize += drone.OrderCapacity(queue.get(i));
+                }
+                //check if the whole queue can fit on the drone, if so send it all
+                if(queueSize <= drone.maxCapacity){
+                    travelTime = tc.time(queue, true);
+                    for(int i = 0; i < queue.size(); i++){
+                        turnAroundTime.add((double)(curMin + travelTime - queue.get(i).timeIn));
+                    }
+                    queue.clear();
+                    curMin += travelTime;
+                }
+                else{//split up the queu by FIFO and delver it all
+                    ArrayList<ArrayList<Order>> megaQueue = drone.knapsacking(queue);
+                    //deleiver all the batches
+                    for(int smallQueue = 0; smallQueue < megaQueue.size(); smallQueue++){
+                        travelTime = tc.time(megaQueue.get(smallQueue), true);
+                        for(int i = 0; i < megaQueue.get(smallQueue).size(); i++){
+                            turnAroundTime.add((double)(curMin + travelTime - megaQueue.get(smallQueue).get(i).timeIn));
+                        }
+                        curMin += travelTime;
+                    }
+                    queue.clear();
+                }
+                
+            }
+            else{ //queue isn't big enough
+                curMin++;
+            }
         }
-    return times;
+//        System.out.println("Turn Around Times (Knapsacking): ");
+//        for(int i = 0; i < Math.min(turnAroundTime.size(), orderList.size()); i++){
+//            System.out.println("\tTime in: " + orderList.get(i).timeIn + "\n\tTOT: " + turnAroundTime.get(i));
+//        }
+        return turnAroundTime;
     }
 }
-

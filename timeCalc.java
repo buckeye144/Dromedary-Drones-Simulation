@@ -1,20 +1,20 @@
 import java.util.ArrayList;
 
 public class timeCalc {
-	
-	public void time (ArrayList<Order> orders, boolean firstLeave) {
+	//everything is in minutes
+	public double time (ArrayList<Order> orders, boolean firstLeave) {
 		TravelingSalesman tsp = new TravelingSalesman();
 		ArrayList<Connection> bestTour = tsp.calcRoute(orders);
 		ArrayList<Order> orderCopy = new ArrayList<Order>(orders);
 		double time = 0.0;
 		
 		if (!firstLeave) {
-			time = time + 180;
+			time = time + 3;
 		}
 		
 		for(int i = 0; i < bestTour.size(); i++) {
-			time = time + bestTour.get(i).getDistance()/29.333;
-			time = time + 30;	//Drop off
+			time = time + bestTour.get(i).getDistance()/1760; //20mph -> 1760 fpm
+			time = time + .5;	//Drop off for 30 seconds
 		}
 		
 		for (int i = 0 ; i < orderCopy.size(); i++) {
@@ -49,5 +49,6 @@ public class timeCalc {
 //			}
 //		}
 //		System.out.println(times);
+		return time;
 	}
 }
