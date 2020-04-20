@@ -1,5 +1,6 @@
 # Dromedary-Drones-Simulation
-Team: Coral
+Team Coral:
+
 How to run:
 1. If not already added, add the following .jar files from lib if not already added: commons-collections4-4.4, commons-compress-1.20, commons-math3-3.6.1, curvesapi-1.06, poi-4.1.2, poi-examples-4.1.2, poi-excelant-4.1.2, poi-ooxml-4.1.2, poi-ooxml-schemas-4.1.2, poi-scratchpad-4.1.2, xmlbeans-3.1.0
 2. Open in Eclipse
