@@ -15,8 +15,8 @@ public class Results {
 		
 		final NumberAxis xAxis = new NumberAxis();
 		final NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel("Order #");
-		yAxis.setLabel("Turn Around Time (minutes)");
+		xAxis.setLabel("Time");
+		yAxis.setLabel("Number of Orders");
 		final LineChart<Number,Number> lineChart =
 				new LineChart<Number,Number>(xAxis,yAxis);
 		Button back = new Button("Back");
@@ -33,7 +33,7 @@ public class Results {
 		for (int i = 0; i < results.get(0).size(); i++) {
 			series.getData().add(new XYChart.Data(i, results.get(0).get(i)));
 		}
-		int FIFOAverage = (int)(results.get(0).get(results.get(0).size() - 1) / totalOrders);
+//		double FIFOAverage = (results.get(0).get(results.get(0).size() - 1) / (double)totalOrders);
         
         XYChart.Series series2 = new XYChart.Series();
         series2.setName("Knapsack");
@@ -42,17 +42,17 @@ public class Results {
 			series2.getData().add(new XYChart.Data(index, results.get(1).get(i)));
 			index++;
 		}
-        int KPAverage = (int)(results.get(1).get(results.get(1).size() - 1) / totalOrders);
+//        double KPAverage = (results.get(1).get(results.get(1).size() - 1) / (double)totalOrders);
         
         lineChart.getData().addAll(series,series2);
         
-		Label FIFOAverageLabel = new Label("FIFO Average: " + FIFOAverage);
-		Label KPAverageLabel = new Label("Knapsack Average: " + KPAverage);
+//		Label FIFOAverageLabel = new Label("FIFO Average: " + FIFOAverage);
+//		Label KPAverageLabel = new Label("Knapsack Average: " + KPAverage);
         
         average.setStyle("-fx-font-size:20");
         average2.setStyle("-fx-font-size:20");
-        FIFOAverageLabel.setStyle("-fx-font-size:20");
-        KPAverageLabel.setStyle("-fx-font-size:20");
+//        FIFOAverageLabel.setStyle("-fx-font-size:20");
+//        KPAverageLabel.setStyle("-fx-font-size:20");
         
 		back.setStyle("-fx-font-size:16");
 		back.setMaxWidth(150);
@@ -64,11 +64,11 @@ public class Results {
 		subRoot.setPadding(new Insets(10, 10, 10, 10));
 		subRoot.setVgap(5);
 		subRoot.setHgap(150);
-		GridPane.setConstraints(FIFOAverageLabel, 0, 0);
-		GridPane.setConstraints(KPAverageLabel, 0, 1);
+//		GridPane.setConstraints(FIFOAverageLabel, 0, 0);
+//		GridPane.setConstraints(KPAverageLabel, 0, 1);
 		GridPane.setConstraints(back, 0, 2);
 		
-		subRoot.getChildren().addAll(FIFOAverageLabel,KPAverageLabel,back);
+		subRoot.getChildren().addAll(back);
 		
 		VBox root = new VBox();
 		root.setSpacing(10);
