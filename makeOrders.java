@@ -73,7 +73,7 @@ public class makeOrders{
         //TODO: Add timestamps or something to the orders
         //1st hour
         Random r = new Random();
-        int[] shiftOrders = {30, 34, 44, 30};
+        int[] shiftOrders = {15, 17, 22, 15};
         for(int i = 0; i < shiftOrders.length; i++){
             int minuteMarker = 0;
             for(int j = 0; j < shiftOrders[i]; j++){
