@@ -69,8 +69,8 @@ public class MainMenu extends Application {
 			results.add(os.KnapSack());
 			Results r = new Results();
 			menu.setScene(r.results(this, results));
-			exportExcel excel = new exportExcel();
-			excel.printExcel(results);
+//			exportExcel excel = new exportExcel();
+//			excel.printExcel(results);
 		});
 		
 		settings.setOnAction(e -> {
@@ -99,7 +99,7 @@ public class MainMenu extends Application {
 	}
 	
 	private void closeProgram() throws Exception {
-		boolean answer = true; //ConfirmBox.display();
+		boolean answer = ConfirmBox.display();
 		if (answer) {
 			menu.close();
 		}

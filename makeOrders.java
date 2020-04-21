@@ -70,8 +70,10 @@ public class makeOrders{
         orderList = new ArrayList<>();
         
         //add the orders to the list as they are listed
+        //TODO: Add timestamps or something to the orders
+        //1st hour
         Random r = new Random();
-        int[] shiftOrders = {15, 17, 22, 15};
+        int[] shiftOrders = {30, 34, 44, 30};
         for(int i = 0; i < shiftOrders.length; i++){
             int minuteMarker = 0;
             for(int j = 0; j < shiftOrders[i]; j++){
@@ -98,12 +100,13 @@ public class makeOrders{
         drone = new Drone();
         ArrayList<Double> turnAroundTime = new ArrayList<>();
         ArrayList<Order> queue = new ArrayList<>();
-        TimeCalc tc = new TimeCalc();
+        timeCalc tc = new timeCalc();
         int orderNum = 0;//tracks which orders have been shipped
         double travelTime = 0.0;
         //go through the order list minute by minute and once you have at least two orders send the drone out
         int curMin = 0;
         while(orderNum < orderList.size()){ //how many minutes there are in the shift
+            //TODO: check and make sure all the orders are delivered
             while(orderNum < orderList.size() && orderList.get(orderNum).timeIn < curMin){ //add all the orders that have come in before the current time
                 queue.add(orderList.get(orderNum));
                 orderNum++;
@@ -141,6 +144,10 @@ public class makeOrders{
                 curMin++;
             }
         }
+//        System.out.println("Turn Around Times (FIFO): ");
+//        for(int i = 0; i < Math.min(turnAroundTime.size(), orderList.size()); i++){
+//            System.out.println("\tTime in: " + orderList.get(i).timeIn + "\n\tTOT: " + turnAroundTime.get(i));
+//        }
         return turnAroundTime;
     }
         
@@ -150,7 +157,7 @@ public class makeOrders{
         drone = new Drone();
         ArrayList<Double> turnAroundTime = new ArrayList<>();
         ArrayList<Order> queue = new ArrayList<>();
-        TimeCalc tc = new TimeCalc();
+        timeCalc tc = new timeCalc();
         int orderNum = 0;//tracks which orders have been shipped
         double travelTime = 0.0;
         //go through the order list minute by minute and once you have at least two orders send the drone out
@@ -194,6 +201,10 @@ public class makeOrders{
                 curMin++;
             }
         }
+//        System.out.println("Turn Around Times (Knapsacking): ");
+//        for(int i = 0; i < Math.min(turnAroundTime.size(), orderList.size()); i++){
+//            System.out.println("\tTime in: " + orderList.get(i).timeIn + "\n\tTOT: " + turnAroundTime.get(i));
+//        }
         return turnAroundTime;
     }
 }
