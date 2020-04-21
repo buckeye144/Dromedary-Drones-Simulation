@@ -157,7 +157,7 @@ public class makeOrders{
         drone = new Drone();
         ArrayList<Double> turnAroundTime = new ArrayList<>();
         ArrayList<Order> queue = new ArrayList<>();
-        timeCalc tc = new timeCalc();
+        TimeCalc tc = new TimeCalc();
         int orderNum = 0;//tracks which orders have been shipped
         double travelTime = 0.0;
         //go through the order list minute by minute and once you have at least two orders send the drone out

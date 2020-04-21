@@ -5,7 +5,6 @@ public class TimeCalc {
 	public double time (ArrayList<Order> orders, boolean firstLeave) {
 		TravelingSalesman tsp = new TravelingSalesman();
 		ArrayList<Connection> bestTour = tsp.calcRoute(orders);
-		ArrayList<Order> orderCopy = new ArrayList<Order>(orders);
 		double time = 0.0;
 		
 		if (!firstLeave) {
