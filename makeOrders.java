@@ -118,22 +118,21 @@ public class makeOrders{
                     queueSize += drone.OrderCapacity(queue.get(i));
                 }
                 //check if the whole queue can fit on the drone, if so send it all
-                //TODO: turn around time is the time between when the order is generated and when the drone leaves the order’s delivery point on its flight
                 if(queueSize <= drone.maxCapacity){
                     travelTime = tc.time(queue, true);
                     for(int i = 0; i < queue.size(); i++){
-                        turnAroundTime.add((double)(curMin + travelTime - queue.get(i).timeIn));
+                        turnAroundTime.add((double)(curMin + queue.get(i).timeOut - queue.get(i).timeIn));
                     }
                     queue.clear();
                     curMin += travelTime;
                 }
-                else{//split up the queu by FIFO and delver it all
+                else{//split up the queue by FIFO and delver it all
                     ArrayList<ArrayList<Order>> megaQueue = drone.FIFO(queue);
                     //deleiver all the batches
                     for(int smallQueue = 0; smallQueue < megaQueue.size(); smallQueue++){
                         travelTime = tc.time(megaQueue.get(smallQueue), true);
                         for(int i = 0; i < megaQueue.get(smallQueue).size(); i++){
-                            turnAroundTime.add((double)(curMin + travelTime - megaQueue.get(smallQueue).get(i).timeIn));
+                            turnAroundTime.add((double)(curMin + megaQueue.get(smallQueue).get(i).timeOut - megaQueue.get(smallQueue).get(i).timeIn));
                         }
                         curMin += travelTime;
                     }
@@ -145,10 +144,6 @@ public class makeOrders{
                 curMin++;
             }
         }
-//        System.out.println("Turn Around Times (FIFO): ");
-//        for(int i = 0; i < Math.min(turnAroundTime.size(), orderList.size()); i++){
-//            System.out.println("\tTime in: " + orderList.get(i).timeIn + "\n\tTOT: " + turnAroundTime.get(i));
-//        }
         return turnAroundTime;
     }
         
@@ -164,7 +159,6 @@ public class makeOrders{
         //go through the order list minute by minute and once you have at least two orders send the drone out
         int curMin = 0;
         while(orderNum < orderList.size()){ //how many minutes there are in the shift
-            //TODO: check and make sure all the orders are delivered
             while(orderNum < orderList.size() && orderList.get(orderNum).timeIn < curMin){ //add all the orders that have come in before the current time
                 queue.add(orderList.get(orderNum));
                 orderNum++;
@@ -179,18 +173,18 @@ public class makeOrders{
                 if(queueSize <= drone.maxCapacity){
                     travelTime = tc.time(queue, true);
                     for(int i = 0; i < queue.size(); i++){
-                        turnAroundTime.add((double)(curMin + travelTime - queue.get(i).timeIn));
+                        turnAroundTime.add((double)(curMin + queue.get(i).timeOut - queue.get(i).timeIn));
                     }
                     queue.clear();
                     curMin += travelTime;
                 }
-                else{//split up the queu by FIFO and delver it all
+                else{//split up the queue by knapsack and delver it all
                     ArrayList<ArrayList<Order>> megaQueue = drone.knapsacking(queue);
                     //deleiver all the batches
                     for(int smallQueue = 0; smallQueue < megaQueue.size(); smallQueue++){
                         travelTime = tc.time(megaQueue.get(smallQueue), true);
                         for(int i = 0; i < megaQueue.get(smallQueue).size(); i++){
-                            turnAroundTime.add((double)(curMin + travelTime - megaQueue.get(smallQueue).get(i).timeIn));
+                            turnAroundTime.add((double)(curMin + megaQueue.get(smallQueue).get(i).timeOut - megaQueue.get(smallQueue).get(i).timeIn));
                         }
                         curMin += travelTime;
                     }
@@ -202,10 +196,6 @@ public class makeOrders{
                 curMin++;
             }
         }
-//        System.out.println("Turn Around Times (Knapsacking): ");
-//        for(int i = 0; i < Math.min(turnAroundTime.size(), orderList.size()); i++){
-//            System.out.println("\tTime in: " + orderList.get(i).timeIn + "\n\tTOT: " + turnAroundTime.get(i));
-//        }
         return turnAroundTime;
     }
 }
