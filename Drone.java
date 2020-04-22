@@ -10,7 +10,7 @@ public class Drone{
     double dropOffTime; //minutes
 
     public Drone(){
-        this.speed = 20;
+        this.speed = 25;
         this.maxCapacity = 192;
         this.flightTime = 20;
         this. turnAround = 3;

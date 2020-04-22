@@ -8,7 +8,7 @@ public class TimeCalc {
 		double time = 0.0;
 		
 		if (!firstLeave) {
-			time = time + 3;
+			time = time + 2.5;
 		}
 		
 		for(int i = 0; i < bestTour.size(); i++) {
