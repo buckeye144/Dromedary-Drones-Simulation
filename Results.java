@@ -15,14 +15,14 @@ public class Results {
 		
 		final NumberAxis xAxis = new NumberAxis();
 		final NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel("Time");
-		yAxis.setLabel("Number of Orders");
+		xAxis.setLabel("Order #");
+		yAxis.setLabel("Turn Around Time (in minutes)");
 		final LineChart<Number,Number> lineChart =
 				new LineChart<Number,Number>(xAxis,yAxis);
 		Button back = new Button("Back");
 		Label average = new Label("Average FIFO time: ");
 		Label average2 = new Label("Average Knapsack time: ");
-		double totalOrders = 15 + 17 + 22 + 15;
+		double totalOrders = 38 + 45 + 60 + 30;
 		
 		lineChart.setTitle("Drone Simulation");
 		lineChart.setCreateSymbols(false);
