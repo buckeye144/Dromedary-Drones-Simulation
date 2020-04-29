@@ -293,11 +293,94 @@ public class TravelingSalesman {
 	}
 	
 	public ArrayList<Connection> calcRoute3(ArrayList<Order> orders) {
-		// Third time's the charm but it isn't enough
+		// https://www.geeksforgeeks.org/traveling-salesman-problem-tsp-implementation/
+		
+		// Generate list of locations from orders
+		Location sac = new Location("SAC", 0, 0);
+		ArrayList<Location> locs = new ArrayList<>();
+		locs.add(sac);
+		for (Order o : orders) {
+			if (!locs.contains(o.destination)) {  // This comparison might not work
+				locs.add(o.destination);
+			}
+		}
+		int n = locs.size();
+		// Create and populate graph.  It seems a lot of implementations use something like this
+		double[][] graph = new double[n][n];
+		for (int x=0; x<n; x++) {
+			for (int y=0; y<n; y++) {
+				Location l1 = locs.get(x);
+				Location l2 = locs.get(y);
+				graph[x][y] = l1.calcDistance(l2);
+			}
+		}
+		
+		// Oh, my kingdom for either good comments or variable names
+		int sourceVertex = 0;
+		ArrayList<Integer> vertices = new ArrayList<>();
+		for (int i=0; i<n; i++) {
+			if (i != sourceVertex) {
+				vertices.add(i);
+			}
+		}
+		int min_path = Integer.MAX_VALUE;
+		
+		while (true) {
+			int current_pathweight = 0;
+			int k = sourceVertex;
+			for (int i = 0; i < vertices.size(); i++) {
+				current_pathweight += graph[k][vertices.get(i)];
+				k = vertices.get(i);
+			}
+			current_pathweight += graph[k][sourceVertex];
+			min_path = Math.min(min_path, current_pathweight);
+			if (!calcRoute3_nextPermutation(vertices)) {  // Write this function
+				break;
+			}
+		}
 		
 		// Change this
 		ArrayList<Connection> dummy = new ArrayList<>();
 		return dummy;
+	}
+	
+	public boolean calcRoute3_nextPermutation(ArrayList<Integer> vertices) {
+		int temp;  // Used for swapping elements
+		int n = vertices.size();
+		int i = n - 2;
+		while (i >= 0 && (vertices.get(i) >= vertices.get(i + 1))) {
+			i--;
+		}
+		
+		if (i == -1) {
+			return false;
+		}
+		
+		int j = i + 1;
+		while (j < n && (vertices.get(j) > vertices.get(i))) {
+			j++;
+		}
+		j--;
+		
+		// Swap the i, j elements
+		temp = vertices.get(j);
+		vertices.set(j, vertices.get(i));
+		vertices.set(i, temp);
+		
+		int left = i + 1;
+		int right = n - 1;
+		
+		while (left < right) {
+			// Swap left and right elements
+			temp = vertices.get(left);
+			vertices.set(left, vertices.get(right));
+			vertices.set(right, temp);
+			
+			left++;
+			right--;
+		}
+		
+		return true;
 	}
 	
 }
