@@ -246,8 +246,8 @@ public class TravelingSalesman {
 		
 		Location sac = new Location("SAC", 0, 0);
 		double temperature = 1000.0;  // Set this
-		double coolingRate = 0.9;  // Set this
-		int numberOfIterations = 50;  // I don't know what a good value for this is
+		double coolingRate = 1;  // Set this
+		int numberOfIterations = 1000;  // I don't know what a good value for this is
 		
 		// First things first, get a list of Locations from orders.
 		Tour tour = new Tour();
@@ -291,4 +291,13 @@ public class TravelingSalesman {
 		}
 		return results;
 	}
+	
+	public ArrayList<Connection> calcRoute3(ArrayList<Order> orders) {
+		// Third time's the charm but it isn't enough
+		
+		// Change this
+		ArrayList<Connection> dummy = new ArrayList<>();
+		return dummy;
+	}
+	
 }
