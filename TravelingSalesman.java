@@ -294,7 +294,8 @@ public class TravelingSalesman {
 	
 	public ArrayList<Connection> calcRoute3(ArrayList<Order> orders) {
 		// https://www.geeksforgeeks.org/traveling-salesman-problem-tsp-implementation/
-		
+
+		ArrayList<Connection> results = new ArrayList<>();  // Initialized to keep Eclipse from yammering
 		// Generate list of locations from orders
 		Location sac = new Location("SAC", 0, 0);
 		ArrayList<Location> locs = new ArrayList<>();
@@ -311,11 +312,17 @@ public class TravelingSalesman {
 			for (int y=0; y<n; y++) {
 				Location l1 = locs.get(x);
 				Location l2 = locs.get(y);
+				/*if (x == y) {
+					graph[x][y] = Double.MAX_VALUE;
+				} else {
+					graph[x][y] = l1.calcDistance(l2);
+				}*/
 				graph[x][y] = l1.calcDistance(l2);
 			}
 		}
 		
 		// Oh, my kingdom for either good comments or variable names
+		// Store all vertices apart from source vertex
 		int sourceVertex = 0;
 		ArrayList<Integer> vertices = new ArrayList<>();
 		for (int i=0; i<n; i++) {
@@ -323,25 +330,41 @@ public class TravelingSalesman {
 				vertices.add(i);
 			}
 		}
-		int min_path = Integer.MAX_VALUE;
+		double min_path = Double.MAX_VALUE;
 		
 		while (true) {
-			int current_pathweight = 0;
+			ArrayList<Connection> path = new ArrayList<>();
+			// Reset current_pathweight
+			double current_pathweight = 0;
+			
+			// Compute current_pathweight
 			int k = sourceVertex;
 			for (int i = 0; i < vertices.size(); i++) {
 				current_pathweight += graph[k][vertices.get(i)];
+				//System.out.printf("%d, %d\n", k, vertices.get(i));
+				// Add to an ArrayList<Connection>
+				Connection newConn = new Connection(locs.get(k), locs.get(vertices.get(i)));
+				path.add(newConn);
+				
 				k = vertices.get(i);
 			}
 			current_pathweight += graph[k][sourceVertex];
-			min_path = Math.min(min_path, current_pathweight);
+			Connection newConn = new Connection(locs.get(k), locs.get(sourceVertex));
+			path.add(newConn);
+			//System.out.printf("current_pathweight: %f, min_path: %f\n", current_pathweight, min_path);
+			// Update min_path
+			if (current_pathweight < min_path) {
+				min_path = current_pathweight;
+				// If this path is the best we've found yet, keep the above ArrayList
+				results = path;
+			}
 			if (!calcRoute3_nextPermutation(vertices)) {  // Write this function
 				break;
 			}
+			vertices = calcRoute3_vertexShuffle(vertices);  // nextPermutation looks like it's supposed to shuffle the vertices, but I don't think that's happening in Java.
 		}
 		
-		// Change this
-		ArrayList<Connection> dummy = new ArrayList<>();
-		return dummy;
+		return results;
 	}
 	
 	public boolean calcRoute3_nextPermutation(ArrayList<Integer> vertices) {
@@ -354,6 +377,45 @@ public class TravelingSalesman {
 		
 		if (i == -1) {
 			return false;
+		}
+		
+		int j = i + 1;
+		while ((j < n) && (vertices.get(j) > vertices.get(i))) {
+			j++;
+		}
+		j--;
+		
+		// Swap the i, j elements
+		temp = vertices.get(j);
+		vertices.set(j, vertices.get(i));
+		vertices.set(i, temp);
+		
+		int left = i + 1;
+		int right = n - 1;
+		
+		while (left < right) {
+			// Swap left and right elements
+			temp = vertices.get(left);
+			vertices.set(left, vertices.get(right));
+			vertices.set(right, temp);
+			
+			left++;
+			right--;
+		}
+		
+		return true;
+	}
+	
+	public ArrayList<Integer> calcRoute3_vertexShuffle(ArrayList<Integer> vertices) {  // Like nextPermutation, but returns you an ArrayList with elements shuffled
+		int temp;  // Used for swapping elements
+		int n = vertices.size();
+		int i = n - 2;
+		while (i >= 0 && (vertices.get(i) >= vertices.get(i + 1))) {
+			i--;
+		}
+		
+		if (i == -1) {
+			return vertices;
 		}
 		
 		int j = i + 1;
@@ -380,7 +442,7 @@ public class TravelingSalesman {
 			right--;
 		}
 		
-		return true;
+		return vertices;
 	}
 	
 }
