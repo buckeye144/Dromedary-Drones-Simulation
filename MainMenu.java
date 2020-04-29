@@ -20,9 +20,10 @@ public class MainMenu extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
 		menu = primaryStage;
-		
+		Map m = new Map("locations.xml");
 		os = new makeOrders();
-		Map m = new Map("locations.copy.xml");
+		SettingsPage sp = new SettingsPage(this, m);
+		os.makeTheOrders();
 		
 //		menu.setOnCloseRequest(e -> {
 //			e.consume();
@@ -100,8 +101,7 @@ public class MainMenu extends Application {
 		});
 		
 		settings.setOnAction(e -> {
-			SettingsPage sp = new SettingsPage();
-			menu.setScene(sp.settingsPage(this, m));
+			menu.setScene(sp.settingsPage());
 		});
 		
 		viewResults.setOnAction(e -> {
@@ -110,11 +110,6 @@ public class MainMenu extends Application {
 		});
 		
 		quit.setOnAction(e -> {
-//			try {
-//				closeProgram();
-//			} catch (Exception e1) {
-//				e1.printStackTrace();
-//			}
 			menu.close();
 		});
 		

@@ -2,15 +2,31 @@ import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.layout.VBox;
 
 public class SettingsPage {
+	
+	FoodSettings fs;
+	MealSettings ms;
+	ShiftSettings ss;
+	LocationSettings ls;
+	VBox fsBox, msBox, ssBox, lsBox;
+	MainMenu mm;
+	Map map;
+	
+	public SettingsPage(MainMenu mm, Map map) {
+		fs = new FoodSettings();
+		ms = new MealSettings();
+		ss = new ShiftSettings();
+		ls = new LocationSettings();
+		fsBox = fs.food(mm);
+		lsBox = ls.locations(mm, map);
+		msBox = ms.meals(mm);
+		ssBox = ss.shiftSettings(mm);
+	}
 
-	public Scene settingsPage(MainMenu mm, Map map) {
+	public Scene settingsPage() {
 		
-		FoodSettings fs = new FoodSettings();
-		MealSettings ms = new MealSettings();
-		ShiftSettings ss = new ShiftSettings();
-		LocationSettings ls = new LocationSettings();
 		TabPane settings = new TabPane();
 		Scene settingsPage = new Scene(settings, 1000, 750);
 		
@@ -19,10 +35,10 @@ public class SettingsPage {
 		Tab shift = new Tab("Shifts");
 		Tab locations = new Tab("Locations");
 		
-		food.setContent(fs.food(mm));
-		locations.setContent(ls.locations(mm, map));
-		meals.setContent(ms.meals(mm));
-		shift.setContent(ss.shiftSettings(mm));
+		food.setContent(fsBox);
+		locations.setContent(lsBox);
+		meals.setContent(msBox);
+		shift.setContent(ssBox);
 		
 		settings.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		settings.getTabs().addAll(food,meals,shift,locations);

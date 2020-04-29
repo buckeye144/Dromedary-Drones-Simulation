@@ -15,39 +15,35 @@ public class makeOrders{
 	Drone drone;
 	
 	public makeOrders() {
-		//Make the default meals
 		meals = FXCollections.observableArrayList();
 		foodList = new ArrayList<FoodItem>();
-		FoodItem hamburger = new FoodItem("hamburger", 6);
-        FoodItem fries = new FoodItem("fries", 4);
-        FoodItem drink = new FoodItem("drink", 14);
+	}
+	
+	public void makeTheOrders() {
+		//Make the default meals
         ObservableList<FoodItem> meal0 = FXCollections.observableArrayList();
-        meal0.add(hamburger);
-        meal0.add(fries);
-        meal0.add(drink);
+        meal0.add(foodList.get(0));
+        meal0.add(foodList.get(1));
+        meal0.add(foodList.get(2));
         typical = new Meal("typical", meal0, .50);
         ObservableList<FoodItem> meal1 = FXCollections.observableArrayList();
-        meal1.add(hamburger);
-        meal1.add(hamburger);
-        meal1.add(fries);
-        meal1.add(drink);
+        meal1.add(foodList.get(0));
+        meal1.add(foodList.get(0));
+        meal1.add(foodList.get(1));
+        meal1.add(foodList.get(2));
         twoBurgerMeal = new Meal("twoBurgerMeal", meal1, .20);
         ObservableList<FoodItem> meal2 = FXCollections.observableArrayList();
-        meal2.add(hamburger);
-        meal2.add(fries);
+        meal2.add(foodList.get(0));
+        meal2.add(foodList.get(1));
         burgerFries = new Meal("burgerFries", meal2, .15);
         ObservableList<FoodItem> meal3 = FXCollections.observableArrayList();
-        meal3.add(hamburger);
-        meal3.add(hamburger);
-        meal3.add(fries);
+        meal3.add(foodList.get(0));
+        meal3.add(foodList.get(0));
+        meal3.add(foodList.get(1));
         twoBurgers = new Meal("twoBurgers", meal3, .10);
         ObservableList<FoodItem> meal4 = FXCollections.observableArrayList();
-        meal4.add(fries);
-        justFries = new Meal("justFries", meal4, .5);
-
-        foodList.add(hamburger);
-        foodList.add(fries);
-        foodList.add(drink);
+        meal4.add(foodList.get(1));
+        justFries = new Meal("justFries", meal4, .05);
 
         meals.add(typical);
         meals.add(twoBurgerMeal);

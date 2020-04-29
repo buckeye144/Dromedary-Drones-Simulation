@@ -10,27 +10,29 @@ import javafx.scene.layout.VBox;
 
 public class LocationSettings {
 	
-	ListView<String> locations;
+	ListView<Location> locations;
 	TextField name;
 	TextField x;
 	TextField y;
-	ObservableList<String> items;
+	ObservableList<Location> items;
 	XML xml;
+	Map map;
+	String sameLocation;
 
 	public VBox locations(MainMenu mm, Map map) {
 		
+		this.map = map;
 		xml = new XML();
 		GridPane grid = new GridPane();
 		GridPane grid2 = new GridPane();
 		VBox page = new VBox();
-		locations = new ListView<String>();
+		locations = new ListView<Location>();
 		items = FXCollections.observableArrayList();
 		name = new TextField();
 		x = new TextField();
 		y = new TextField();
-		TextField removeLocation = new TextField();
 		Label title = new Label("List of current locations");
-		Label addLabel = new Label("Add/edit a location");
+		Label addLabel = new Label("Add or change a location");
 		Label removeLabel = new Label("Remove a location");
 		Label confirm = new Label();
 		Label confirm2 = new Label();
@@ -57,10 +59,6 @@ public class LocationSettings {
 		y.setMaxWidth(200);
 		y.setMinHeight(30);
 		removeLabel.setStyle("-fx-font-size:16");
-		removeLocation.setPromptText("Enter name of location");
-		removeLocation.setStyle("-fx-font-size:16");
-		removeLocation.setMinWidth(200);
-		removeLocation.setMaxHeight(30);
 		locations.setStyle("-fx-font-size:20");
 		locations.setItems(items);
 		locations.setMinWidth(500);
@@ -69,7 +67,7 @@ public class LocationSettings {
 		back.setMaxWidth(150);
 		
 		for(int i = 0; i < map.waypoints.size(); i++) {
-			items.add(map.waypoints.get(i).getName());
+			items.add(map.waypoints.get(i));
 		}
 		
 		locations.getSelectionModel().selectedItemProperty().addListener(e ->{
@@ -89,19 +87,21 @@ public class LocationSettings {
 		grid2.setPadding(new Insets(10, 10, 10, 10));
 		grid2.setVgap(5);
 		grid2.setHgap(5);
-		GridPane.setConstraints(addLabel, 0, 0);
-		GridPane.setConstraints(name, 0, 1);
-		GridPane.setConstraints(x, 0, 2);
-		GridPane.setConstraints(y, 0, 3);
-		GridPane.setConstraints(confirm, 0, 4);
+		GridPane.setConstraints(locationsName, 0, 1);
+		GridPane.setConstraints(locationsX, 0, 2);
+		GridPane.setConstraints(locationsY, 0, 3);
+		GridPane.setConstraints(addLabel, 1, 0);
+		GridPane.setConstraints(name, 1, 1);
+		GridPane.setConstraints(x, 1, 2);
+		GridPane.setConstraints(y, 1, 3);
+		GridPane.setConstraints(confirm, 1, 4);
 		GridPane.setConstraints(removeLabel, 0, 6);
-		GridPane.setConstraints(removeLocation, 0, 7);
 		GridPane.setConstraints(confirm2, 0, 8);
-		GridPane.setConstraints(add, 1, 2);
-		GridPane.setConstraints(update, 1, 3);
-		GridPane.setConstraints(remove, 1, 7);
-		grid2.getChildren().addAll(addLabel,name,x,y,confirm,add,update,
-				removeLabel,removeLocation,confirm2,remove);
+		GridPane.setConstraints(add, 2, 3);
+		GridPane.setConstraints(update, 3, 3);
+		GridPane.setConstraints(remove, 0, 7);
+		grid2.getChildren().addAll(locationsName,locationsY,locationsX,addLabel,name,
+				x,y,confirm,add,update,removeLabel,confirm2,remove);
 		
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(5);
@@ -111,51 +111,71 @@ public class LocationSettings {
 		GridPane.setConstraints(grid2, 1, 1);
 		grid.getChildren().addAll(title,locations,grid2);
 		
-		//TODO: Implement XML adding
-		//Currently a temporary change, if program shuts down, changes are lost
+		//Adds a new location
 		add.setOnAction(e -> {
 			//If one of the boxes is empty, print error message
-			if (name.getText().matches("") || x.getText().matches("")
-					|| y.getText().matches("")) {
-				confirm.setText("Invalid name/coordinates");
+			if (name.getText().matches("")) {
+				confirm.setText("Cannot insert blank name");
+			}
+			else if(x.getText().matches("") || y.getText().matches("")) {
+				confirm.setText("Invalid coordinates");
 			}
 			//Prevents letters/characters being used as weights
-			else if (!x.getText().matches("[^\\d]") || !y.getText().matches("[^\\d]")) {
+			else if (!x.getText().matches("-?[0-9]*") || !y.getText().matches("-?[0-9]*")) {
 				confirm.setText("Invalid name/coordinates");
 			}
+			else if(checkForExistingName(name.getText())) {
+				confirm.setText("Location name already exists");
+			}
+			else if(checkForExistingCoordinates(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()))) {
+				confirm.setText("Same coordinates as " + sameLocation);
+			}
 			//Adds new location item
-			else if (x.getText().matches("[^//d]") || x.getText().contains("-") ||
-					y.getText().matches("[^//d]") || y.getText().contains("-")) {
+			else if (x.getText().matches("[0-9]*") || x.getText().contains("-") ||
+					y.getText().matches("[0-9]*") || y.getText().contains("-")) {
 				Location l = new Location(name.getText(), Integer.parseInt(x.getText()),
 						Integer.parseInt(y.getText()));
-				items.add(l.getName());
+				xml.addLocation(l);
+				map.waypoints.add(l);
+				items.add(l);
 				locations.setItems(items);
 				confirm.setText(l.getName() + " added!");
 				name.clear();
 				x.clear();
 				y.clear();
 			}
+			else {
+				System.out.println("something failed");
+			}
 		});
 		
-		//Changes not lost
+		//Updates an existing location
 		update.setOnAction(e -> {
-			if (name.getText().matches("") || x.getText().matches("")
-					|| y.getText().matches("")) {
-				confirm.setText("Invalid name/coordinates");
+			if (name.getText().matches("")) {
+				confirm.setText("Cannot insert blank name");
+			}
+			else if(x.getText().matches("") || y.getText().matches("")) {
+				confirm.setText("Invalid coordinates");
 			}
 			else if (!x.getText().matches("-?[0-9]*") || !y.getText().matches("-?[0-9]*")) {
 				confirm.setText("Invalid name/coordinates");
 			}
+			else if(checkForExistingNameUpdating(name.getText(), locations.getSelectionModel().getSelectedIndex())) {
+				confirm.setText("Location name already exists");
+			}
+			else if(checkForExistingCoordinates(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()))) {
+				confirm.setText("Same coordinates as " + sameLocation);
+			}
 			else {
-				String current = locations.getSelectionModel().selectedItemProperty().get();
+				String current = locations.getSelectionModel().selectedItemProperty().get().getName();
 				int index = locations.getSelectionModel().getSelectedIndex();
-				xml.edit(current, name.getText(), x.getText(), y.getText());
+				xml.updateLocation(current, name.getText(), x.getText(), y.getText());
 				map.waypoints.get(index).setName(name.getText());
 				map.waypoints.get(index).setX(Integer.parseInt(x.getText()));
 				map.waypoints.get(index).setY(Integer.parseInt(y.getText()));
 				items.clear();
 				for(int i = 0; i < map.waypoints.size(); i++) {
-					items.add(map.waypoints.get(i).getName());
+					items.add(map.waypoints.get(i));
 				}
 				confirm.setText("Updated!");
 				name.clear();
@@ -164,29 +184,17 @@ public class LocationSettings {
 			}
 		});
 		
-		//Changes are lost
+		//Removes a location
 		remove.setOnAction(e -> {
-			//Can't remove nothing
-			if (removeLocation.getText().matches("")) {
-				confirm2.setText("Invalid location name");
-			}
-			//Search for location
-			else {
-				//Found location
-				for(int i = 0; i < map.waypoints.size(); i++) {
-					if(map.waypoints.get(i).getName().matches(removeLocation.getText())) {
-						map.waypoints.remove(i);
-						items.clear();
-						for(int j = 0; j < map.waypoints.size(); j++) {
-							items.add(map.waypoints.get(j).getName());
-						}
-						confirm2.setText("Removed " + removeLocation.getText());
-						removeLocation.clear();
-						break;
-					} else {
-						confirm2.setText("Location not found");
-					}
-				}
+			if(locations.getSelectionModel().isEmpty()) {
+				confirm2.setText("Nothing selected");
+			} else {
+				int index = locations.getSelectionModel().getSelectedIndex();
+				confirm2.setText("Removed " + items.get(index));
+				xml.remove(items.get(index).getName(), "location", "locName", "locations.xml");
+				map.removeLocation(items.get(index).getName());
+				items.remove(index);
+				locations.getSelectionModel().clearSelection();
 			}
 		});
 		
@@ -200,4 +208,37 @@ public class LocationSettings {
 		
 		return page;
 	}
+	
+	private boolean checkForExistingName(String toSearchFor) {
+		for(int i = 0; i < items.size(); i++) {
+			if(items.get(i).getName().matches(toSearchFor)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkForExistingNameUpdating(String toSearchFor, int index) {
+		for(int i = 0; i < items.size(); i++) {
+			if(i != index) {
+				if(items.get(i).getName().matches(toSearchFor)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkForExistingCoordinates(int x, int y) {
+		for(int i = 0; i < map.waypoints.size(); i++) {
+			if(map.waypoints.get(i).getX() == x && 
+			   map.waypoints.get(i).getY() == y) {
+				this.sameLocation = map.waypoints.get(i).getName();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 }
