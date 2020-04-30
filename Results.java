@@ -1,13 +1,10 @@
 import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -38,6 +35,7 @@ public class Results {
 		xAxis.setLabel("Turn Around Time (in minutes)");
 		yAxis.setLabel("# of Orders");
 		final BarChart<String,Number> histogram = new BarChart<String,Number>(xAxis,yAxis);
+		histogram.setStyle("-fx-bar-gap: -2");
 
 		Button back = new Button("Back");
 		
@@ -45,6 +43,7 @@ public class Results {
 		
 		XYChart.Series<String,Number> series = new XYChart.Series();
 		series.setName("FIFO");
+		
 
 		int curOrder = 0; //keep track of what order you're on
 		for (int min = 1; min < maxTime; min++) {
@@ -75,7 +74,7 @@ public class Results {
 					numOrders++;
 				}
 				else{
-					series.getData().add(new XYChart.Data(Integer.toString(min), numOrders));
+					series2.getData().add(new XYChart.Data(Integer.toString(min), numOrders));
 					break;
 				}
 			}
@@ -84,15 +83,19 @@ public class Results {
         
         histogram.getData().addAll(series,series2);
         
-		Label FIFOAverageLabel = new Label("FIFO Average: " + FIFOAverage);
-		Label KnapsackAverageLabel = new Label("Knapsack Average: " + KnapsackAverage);
-		Label maxFifoLabel = new Label("Max FIFO time: " + fifoMax);
-		Label maxKnapsackLabel = new Label("Max Knapsack time: " + knapsackMax);
-		Label minFifoLabel = new Label("Min FIFO time: " + fifoMin);
-		Label minKnapsackLabel = new Label("Min Knapsack time: " + knapsackMin);
+		Label FIFOAverageLabel = new Label(String.format("FIFO Average: %.3f", FIFOAverage));
+		Label KnapsackAverageLabel = new Label(String.format("Knapsack Average: %.3f", KnapsackAverage));
+		Label maxFifoLabel = new Label(String.format("Max FIFO time: %.3f", fifoMax));
+		Label maxKnapsackLabel = new Label(String.format("Max Knapsack time: %.3f", knapsackMax));
+		Label minFifoLabel = new Label(String.format("Min FIFO time: %.3f", fifoMin));
+		Label minKnapsackLabel = new Label(String.format("Min Knapsack time: %.3f", knapsackMin));
         
         FIFOAverageLabel.setStyle("-fx-font-size:20");
         KnapsackAverageLabel.setStyle("-fx-font-size:20");
+        maxFifoLabel.setStyle("-fx-font-size:16");
+        minFifoLabel.setStyle("-fx-font-size:16");
+        maxKnapsackLabel.setStyle("-fx-font-size:16");
+        minKnapsackLabel.setStyle("-fx-font-size:16");
         
 		back.setStyle("-fx-font-size:16");
 		back.setMaxWidth(150);
@@ -105,10 +108,15 @@ public class Results {
 		subRoot.setVgap(5);
 		subRoot.setHgap(150);
 		GridPane.setConstraints(FIFOAverageLabel, 0, 0);
-		GridPane.setConstraints(KnapsackAverageLabel, 0, 1);
-		GridPane.setConstraints(back, 0, 2);
+		GridPane.setConstraints(maxFifoLabel, 0, 1);
+		GridPane.setConstraints(minFifoLabel, 0, 2);
+		GridPane.setConstraints(KnapsackAverageLabel, 1, 0);
+		GridPane.setConstraints(maxKnapsackLabel, 1, 1);
+		GridPane.setConstraints(minKnapsackLabel, 1, 2);
+		GridPane.setConstraints(back, 0, 3);
 		
-		subRoot.getChildren().addAll(back);
+		subRoot.getChildren().addAll(back,FIFOAverageLabel,KnapsackAverageLabel,
+				maxFifoLabel,minFifoLabel,maxKnapsackLabel,minKnapsackLabel);
 		
 		VBox root = new VBox();
 		root.setSpacing(10);
