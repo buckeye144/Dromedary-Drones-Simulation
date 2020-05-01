@@ -43,4 +43,10 @@ public class Location {
 	public String toString() {
 	    return this.getName();
 	}
+	
+	public static double calcDistance(Location l1, Location l2) {
+		int x = Math.abs(l1.getX() - l2.getX());
+        int y = Math.abs(l1.getY() - l2.getY());
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+	}
 }
