@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><foodList>
+  <name>Food item list</name>
+<food>
+    <foodName>hamburger</foodName>
+    <weight>6</weight>
+  </food>
+<food>
+    <foodName>fries</foodName>
+    <weight>4</weight>
+  </food>
+<food>
+    <foodName>drink</foodName>
+    <weight>14</weight>
+  </food>
+
+
+
+
+
+
+</foodList>

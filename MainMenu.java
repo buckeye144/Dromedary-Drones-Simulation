@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,9 +21,9 @@ public class MainMenu extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
 		menu = primaryStage;
-		
+		Map m = new Map("locations.xml");
 		os = new makeOrders();
-		Map m = new Map("locations.copy.xml");
+		SettingsPage sp = new SettingsPage(this, m);
 		
 //		menu.setOnCloseRequest(e -> {
 //			e.consume();
@@ -63,19 +64,51 @@ public class MainMenu extends Application {
 		
 		//Button jobs
 		start.setOnAction(e -> {
-			os.simulation(m);
 			results = new ArrayList<ArrayList<Double>>();
-			results.add(os.FIFO());
-			results.add(os.KnapSack());
+
+			ArrayList<Double> fifo = new ArrayList<Double>();
+			ArrayList<Double> knapsack = new ArrayList<Double>();
+			// ArrayList<Double> fifoTemp = new ArrayList<Double>();
+			// ArrayList<Double> knapsackTemp = new ArrayList<Double>();
+
+			for(int i = 0; i < 50; i++){
+				os.simulation(m); //new simulation
+				fifo.addAll(os.FIFO());
+				knapsack.addAll(os.KnapSack());
+			}
+			// //initialize the values to 0
+			// for(int i = 0; i < 38+45+60+30; i++){
+			// 	knapsack.add(0.0);
+			// 	fifo.add(0.0);
+			// }
+
+			// for(int i = 0; i < 50; i++){ //run it 50 times and average the results
+			// 	os.simulation(m);
+			// 	fifoTemp = os.FIFO();
+			// 	knapsackTemp = os.KnapSack();
+			// 	for(int j = 0; j < fifoTemp.size(); j++){
+			// 		knapsack.set(j, knapsack.get(j) + knapsackTemp.get(j));
+			// 		fifo.set(j, fifo.get(j) + fifoTemp.get(j));
+			// 	}
+			// 	if(i == 49){// take the average
+			// 		for(int j = 0; j < fifoTemp.size(); j++){
+			// 			knapsack.set(j, knapsack.get(j)/50);
+			// 			fifo.set(j, fifo.get(j)/50);
+			// 		}
+			// 	}
+			// }
+			Collections.sort(fifo);
+			Collections.sort(knapsack);
+			results.add(fifo);
+			results.add(knapsack);
 			Results r = new Results();
 			menu.setScene(r.results(this, results));
-			exportExcel excel = new exportExcel();
-			excel.printExcel(results);
+//			exportExcel excel = new exportExcel();
+//			excel.printExcel(results);
 		});
 		
 		settings.setOnAction(e -> {
-			SettingsPage sp = new SettingsPage();
-			menu.setScene(sp.settingsPage(this, m));
+			menu.setScene(sp.settingsPage());
 		});
 		
 		viewResults.setOnAction(e -> {
@@ -84,17 +117,12 @@ public class MainMenu extends Application {
 		});
 		
 		quit.setOnAction(e -> {
-//			try {
-//				closeProgram();
-//			} catch (Exception e1) {
-//				e1.printStackTrace();
-//			}
 			menu.close();
 		});
 		
 		menu.setTitle("Drone Delivery Simulation");
 		menu.setScene(menuWindow);
-		menu.setResizable(true);
+		menu.setResizable(false);
 		menu.show();
 	}
 	

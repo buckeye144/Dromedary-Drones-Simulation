@@ -15,7 +15,7 @@ public class Map {
 	ArrayList<Location> waypoints;
 	
 	public Map() {
-		String name = "";
+		this.name = "";
 		waypoints = new ArrayList<Location>();
 	}
 	
@@ -81,7 +81,7 @@ public class Map {
 	
 	public void addLocation(String locName, int x, int y) {
 		Location newLoc = new Location(locName, x, y);
-		boolean success = waypoints.add(newLoc);
+		waypoints.add(newLoc);
 	}
 	
 	public void removeLocation(String locName) {
