@@ -216,7 +216,8 @@ public class TravelingSalesman {
 					if(!feasible(connections.get(i).getDistance())) {
 						Connection fail = new Connection(sac, sac);
 						currentTour.add(fail);
-						System.out.println("failed");
+//						System.out.println("failed");
+						return currentTour;
 					} else {
 						shortest = connections.get(i).getDistance();
 						temp = connections.get(i);
