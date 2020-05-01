@@ -3,8 +3,21 @@ import java.util.ArrayList;
 public class TimeCalc {
 	//everything is in minutes
 	public double time(ArrayList<Order> orders, boolean firstLeave) {
+		ArrayList<Connection> bestTour;
 		TravelingSalesman tsp = new TravelingSalesman();
-		ArrayList<Connection> bestTour = tsp.calcRoute(orders);
+		ArrayList<Location> locs = new ArrayList<>();
+		for (Order o : orders) {
+			if (!locs.contains(o.destination)) {
+				locs.add(o.destination);
+			}
+		}
+		if (locs.size() <= 8) {  // Small data sets
+			bestTour = tsp.calcRoute(orders);  // Use the new algorithm
+		} else {  // Large data sets
+			bestTour = tsp.calcRoute2(orders);  // Use the old algorithm
+		}
+		
+		
 		double time = 0.0;
 		
 		if (!firstLeave) {
