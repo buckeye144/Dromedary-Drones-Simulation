@@ -166,6 +166,9 @@ public class LocationSettings {
 			else if(checkForExistingCoordinates(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()))) {
 				confirm.setText("Same coordinates as " + sameLocation);
 			}
+			else if(locations.getSelectionModel().isEmpty()) {
+				confirm.setText("Please select something to update");
+			}
 			else {
 				String current = locations.getSelectionModel().selectedItemProperty().get().getName();
 				int index = locations.getSelectionModel().getSelectedIndex();

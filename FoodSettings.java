@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -129,23 +128,42 @@ public class FoodSettings {
 			}
 		});
 		
+		
+		//TODO:
+		//Find out way to add food items to meals
+		//Make a shifts settings page
+		
+		
+		
 		update.setOnAction(e -> {
+			int index = foodList.getSelectionModel().getSelectedIndex();
+			if(index == -1) {
+				for(int i = 0; i < food.size(); i++) {
+					if(food.get(i).matches(name.getText())) {
+						index = foodList.getItems().indexOf(food.get(i));
+					}
+				}
+			}
 			//If one of the boxes is empty, print error message
 			if (name.getText().matches("") || weight.getText().matches("")) {
 				confirm.setText("Invalid name/weight");
 			}
-			else if (checkForExistingNameUpdating(name.getText(), foodList.getSelectionModel().getSelectedIndex())) {
+			else if (checkForExistingNameUpdating(name.getText(), index)) {
 				confirm.setText("Food name already exists");
+			}
+			else if(foodList.getSelectionModel().isEmpty()) {
+				confirm.setText("Please select something to update");
 			}
 			//Prevents letters/characters being used as weights
 			else if (weight.getText().matches("[0-9]*")) {
-				int index = foodList.getSelectionModel().getSelectedIndex();
+				xml.updateFood(mm.os.foodList.get(index).name, name.getText(), weight.getText());
 				mm.os.foodList.get(index).name = name.getText();
 				mm.os.foodList.get(index).weight = Integer.parseInt(weight.getText());
-				xml.updateFood(mm.os.foodList.get(index).name, name.getText(), weight.getText());
 				food.clear();
 				readFoodItems(mm);
 				confirm.setText("Updated");
+				name.clear();
+				weight.clear();
 			}
 		});
 		
@@ -181,6 +199,8 @@ public class FoodSettings {
 
 	//Reads and stores what's listed in the xml file
 	private void readFoodItems(MainMenu mm) {
+		food.clear();
+		mm.os.foodList.clear();
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();

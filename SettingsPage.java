@@ -35,6 +35,11 @@ public class SettingsPage {
 		Tab shift = new Tab("Shifts");
 		Tab locations = new Tab("Locations");
 		
+		food.setStyle("-fx-pref-width: 200");
+		meals.setStyle("-fx-pref-width: 200");
+		shift.setStyle("-fx-pref-width: 200");
+		locations.setStyle("-fx-pref-width: 200");
+		
 		food.setContent(fsBox);
 		locations.setContent(lsBox);
 		meals.setContent(msBox);
@@ -50,6 +55,4 @@ public class SettingsPage {
 
 
 //TODO: Shifts page: text box to modify how many shifts, how long a shift is, change number of orders in a shift
-//		Food page: modify existing ones
-//		Locations page: modify locations
-//		Meal page: add/remove/modify meals, change probabilities
+//		Meal page: add meals

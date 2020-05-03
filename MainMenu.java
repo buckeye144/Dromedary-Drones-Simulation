@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,16 +24,6 @@ public class MainMenu extends Application {
 		Map m = new Map("locations.xml");
 		os = new makeOrders();
 		SettingsPage sp = new SettingsPage(this, m);
-		os.makeTheOrders();
-		
-//		menu.setOnCloseRequest(e -> {
-//			e.consume();
-//			try {
-//				closeProgram();
-//			} catch(Exception ex) {
-//				ex.printStackTrace();
-//			}
-//		});
 		
 		BorderPane menuScreen = new BorderPane();
 		VBox menuButtons = new VBox();
@@ -125,7 +113,7 @@ public class MainMenu extends Application {
 		
 		menu.setTitle("Drone Delivery Simulation");
 		menu.setScene(menuWindow);
-		menu.setResizable(true);
+		menu.setResizable(false);
 		menu.show();
 	}
 	

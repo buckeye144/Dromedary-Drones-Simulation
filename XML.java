@@ -26,11 +26,11 @@ public class XML {
 			Document doc = docBuilder.parse(filename);
 			NodeList nodes = doc.getElementsByTagName(tagname);
 			for (int i = 0; i < nodes.getLength(); i++) {
-				Element location = (Element)nodes.item(i);
-				Element locationName = (Element)location.getElementsByTagName(name).item(0);
-				String lName = locationName.getTextContent();
+				Element thingToBeRemoved = (Element)nodes.item(i);
+				Element removedName = (Element)thingToBeRemoved.getElementsByTagName(name).item(0);
+				String lName = removedName.getTextContent();
 				if(lName.matches(removed)) {
-					location.getParentNode().removeChild(location);
+					thingToBeRemoved.getParentNode().removeChild(thingToBeRemoved);
 				}
 			}
 			
@@ -40,6 +40,134 @@ public class XML {
 			StreamResult sr = new StreamResult(new File(filename));
 			t.transform(ds, sr);
 	
+		} catch (TransformerException | 
+				ParserConfigurationException | 
+				SAXException | 
+				IOException tfe) {
+			tfe.printStackTrace();
+		}
+	}
+	
+	public void addShift(int newOrder) {
+		try {
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse("shifts.xml");
+			
+			Element last = doc.getDocumentElement();
+			Element order = doc.createElement("orders");
+			order.setTextContent(Integer.toString(newOrder));
+			
+			last.appendChild(order);
+			
+			DOMSource ds = new DOMSource(doc);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer t = tf.newTransformer();
+			t.setOutputProperty(OutputKeys.INDENT, "yes");
+			t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			StreamResult sr = new StreamResult(new File("shifts.xml"));
+			t.transform(ds, sr);
+	
+		} catch (TransformerException | 
+				ParserConfigurationException | 
+				SAXException | 
+				IOException tfe) {
+			tfe.printStackTrace();
+		}
+	}
+	
+	public void updateShift(int newOrder, int oldNumber) {
+		try {
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse("shifts.xml");
+			NodeList nodes = doc.getElementsByTagName("orders");
+			for (int i = 0; i < nodes.getLength(); i++) {
+				Node order = nodes.item(i);
+				int number = Integer.parseInt(order.getTextContent());
+				if(number == oldNumber) {
+					order.setTextContent(Integer.toString(newOrder));
+				}
+			}
+			
+			DOMSource ds = new DOMSource(doc);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer t = tf.newTransformer();
+			StreamResult sr = new StreamResult(new File("shifts.xml"));
+			t.transform(ds, sr);
+	
+		} catch (TransformerException | 
+				ParserConfigurationException | 
+				SAXException | 
+				IOException tfe) {
+			tfe.printStackTrace();
+		}
+	}
+	
+	public void removeShift(int removed, String tagname, String name, String filename) {
+		try {
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse(filename);
+			NodeList nodes = doc.getElementsByTagName(tagname);
+			Node n = nodes.item(0);
+			NodeList orders = n.getChildNodes();
+			for (int i = 0; i < orders.getLength(); i++) {
+				if(i % 2 == 0) {
+					continue;
+				}
+				Node order = orders.item(i);
+				if(order.getNodeType() == Node.ELEMENT_NODE) {
+					Element thingToBeRemoved = (Element)orders.item(i);
+					int number = Integer.parseInt(thingToBeRemoved.getTextContent());
+					if(number == removed) {
+						thingToBeRemoved.getParentNode().removeChild(thingToBeRemoved);
+					}
+				}
+			}
+			
+			DOMSource ds = new DOMSource(doc);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer t = tf.newTransformer();
+			StreamResult sr = new StreamResult(new File(filename));
+			t.transform(ds, sr);
+	
+		} catch (TransformerException | 
+				ParserConfigurationException | 
+				SAXException | 
+				IOException tfe) {
+			tfe.printStackTrace();
+		}
+	}
+
+	public void removeMealFood(String name, String removed, int index) {
+		try {
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse("meals.xml");
+			NodeList meals = doc.getElementsByTagName("meal");
+			for(int i = 0; i < meals.getLength(); i++) {
+				Element meal = (Element)meals.item(i);
+				Element mealName = (Element)meal.getElementsByTagName("mealName").item(0);
+				String mName = mealName.getTextContent();
+				if(mName.matches(name)) {
+					Element n = (Element)meals.item(i);
+					NodeList foodItems = n.getElementsByTagName("foodItem");
+					for(int j = 0; j < foodItems.getLength(); j++) {
+						if(j == index) {
+							Element food = (Element)foodItems.item(j);
+							food.getParentNode().removeChild(food);
+						}
+					}
+				}
+			}
+			
+			DOMSource ds = new DOMSource(doc);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer t = tf.newTransformer();
+			StreamResult sr = new StreamResult(new File("meals.xml"));
+			t.transform(ds, sr);
+			
 		} catch (TransformerException | 
 				ParserConfigurationException | 
 				SAXException | 
@@ -75,6 +203,45 @@ public class XML {
 			t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			t.transform(ds, sr);
 		
+		} catch (TransformerException | 
+				ParserConfigurationException | 
+				SAXException | 
+				IOException tfe) {
+			tfe.printStackTrace();
+		}
+	}
+	
+	public void addMeal(Meal thing) {
+		try {
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse("meals.xml");
+			Element last = doc.getDocumentElement();
+			Element newMeal = doc.createElement("meal");
+			Element newMealName = doc.createElement("mealName");
+			newMealName.appendChild(doc.createTextNode(thing.name));
+			newMeal.appendChild(newMealName);
+			
+			Element foodList = doc.createElement("foodList");
+			for(int i = 0; i < thing.items.size(); i++) {
+				Element food = doc.createElement("foodItem");
+				food.appendChild(doc.createTextNode(thing.items.get(i).name));
+				foodList.appendChild(food);
+			}
+			
+			Element probability = doc.createElement("probability");
+			probability.appendChild(doc.createTextNode(Double.toString(thing.probability)));
+			
+			last.appendChild(newMeal);
+			
+			DOMSource ds = new DOMSource(doc);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer t = tf.newTransformer();
+			StreamResult sr = new StreamResult(new File("meals.xml"));
+			t.setOutputProperty(OutputKeys.INDENT, "yes");
+			t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			t.transform(ds, sr);
+			
 		} catch (TransformerException | 
 				ParserConfigurationException | 
 				SAXException | 
@@ -123,11 +290,9 @@ public class XML {
 	
 	public void updateFood(String foodName, String newName, String newWeight) {
 		try {
-			
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse("food.xml");
-			
 			NodeList nodes = doc.getElementsByTagName("food");
 			for (int i = 0; i < nodes.getLength(); i++) {
 				Node p = nodes.item(i);
@@ -150,6 +315,52 @@ public class XML {
 			Transformer t = tf.newTransformer();
 			DOMSource ds = new DOMSource(doc);
 			StreamResult sr = new StreamResult(new File("food.xml"));
+			t.transform(ds, sr);
+			
+		} catch (TransformerException | 
+				ParserConfigurationException | 
+				SAXException | 
+				IOException tfe) {
+			tfe.printStackTrace();
+		}
+	}
+	
+	public void updateMeal(String thingName, String newName, String temp) {
+		
+		try {
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse("meals.xml");
+			
+			//Convert newProb to decimal number
+			double newProb = Double.parseDouble(temp);
+			newProb = newProb / 100.0;
+			
+			//Get a list of meals
+			NodeList meals = doc.getElementsByTagName("meal");
+			
+			//Get a list of food in each meal
+			NodeList allFood = doc.getElementsByTagName("foodList");
+			for(int i = 0; i < meals.getLength(); i++) {
+				
+				//Get one meal
+				Element mealThing = (Element) meals.item(i);
+				
+				//Update the meals name and probability
+				Element mealName = (Element) mealThing.getElementsByTagName("mealName").item(0);
+				Element prob = (Element) mealThing.getElementsByTagName("probability").item(0);
+				String mName = mealName.getTextContent();
+				if(mName.matches(thingName)) {
+					mealName.setTextContent(newName);
+					prob.setTextContent(Double.toString(newProb));
+				}
+			}
+			
+			//Rewrite the meals.xml file
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer t = tf.newTransformer();
+			DOMSource ds = new DOMSource(doc);
+			StreamResult sr = new StreamResult(new File("meals.xml"));
 			t.transform(ds, sr);
 			
 		} catch (TransformerException | 

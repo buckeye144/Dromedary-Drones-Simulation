@@ -13,47 +13,15 @@ public class makeOrders{
 	ArrayList<Order> orderList;
 	ArrayList<FoodItem> foodList;
 	Drone drone;
+	ArrayList<Integer> shiftOrders;
 	
 	public makeOrders() {
 		meals = FXCollections.observableArrayList();
 		foodList = new ArrayList<FoodItem>();
+		shiftOrders = new ArrayList<Integer>();
 	}
 	
-	public void makeTheOrders() {
-		//Make the default meals
-        ObservableList<FoodItem> meal0 = FXCollections.observableArrayList();
-        meal0.add(foodList.get(0));
-        meal0.add(foodList.get(1));
-        meal0.add(foodList.get(2));
-        typical = new Meal("typical", meal0, .50);
-        ObservableList<FoodItem> meal1 = FXCollections.observableArrayList();
-        meal1.add(foodList.get(0));
-        meal1.add(foodList.get(0));
-        meal1.add(foodList.get(1));
-        meal1.add(foodList.get(2));
-        twoBurgerMeal = new Meal("twoBurgerMeal", meal1, .20);
-        ObservableList<FoodItem> meal2 = FXCollections.observableArrayList();
-        meal2.add(foodList.get(0));
-        meal2.add(foodList.get(1));
-        burgerFries = new Meal("burgerFries", meal2, .15);
-        ObservableList<FoodItem> meal3 = FXCollections.observableArrayList();
-        meal3.add(foodList.get(0));
-        meal3.add(foodList.get(0));
-        meal3.add(foodList.get(1));
-        twoBurgers = new Meal("twoBurgers", meal3, .10);
-        ObservableList<FoodItem> meal4 = FXCollections.observableArrayList();
-        meal4.add(foodList.get(1));
-        justFries = new Meal("justFries", meal4, .05);
-
-        meals.add(typical);
-        meals.add(twoBurgerMeal);
-        meals.add(burgerFries);
-        meals.add(twoBurgers);
-        meals.add(justFries);
-	     
-	}
     public void simulation(Map map) {
-    	
         //standard location
         Location defaultLoc = new Location("null", 0, 0);
         
@@ -70,17 +38,16 @@ public class makeOrders{
         //add the orders to the list as they are listed
         //1st hour
         Random r = new Random();
-        int[] shiftOrders = {38, 45, 60, 30};
-        for(int i = 0; i < shiftOrders.length; i++){
+        for(int i = 0; i < shiftOrders.size(); i++){
             int minuteMarker = 0;
-            for(int j = 0; j < shiftOrders[i]; j++){
+            for(int j = 0; j < shiftOrders.get(i); j++){
                 double orderNum = r.nextDouble();
                 double prevProbability = 0.0;
                 for(int o = 0; o < possOrders.size(); o++){
                     if(orderNum < possOrders.get(o).meals.probability + prevProbability) {
                         Order temp = new Order(possOrders.get(o));
                         temp.timeIn = i * 60 + minuteMarker;
-                        minuteMarker += r.nextInt(Math.max((int)(60 /shiftOrders[i]),2));
+                        minuteMarker += r.nextInt(Math.max((int)(60 /shiftOrders.get(i)),2));
                         if(minuteMarker > 59) minuteMarker = 59;
                         temp.destination = map.getRandom();
                         orderList.add(temp);
@@ -104,7 +71,7 @@ public class makeOrders{
         int curMin = 0;
         while(orderNum < orderList.size()){ //how many minutes there are in the shift
             while(orderNum < orderList.size() && orderList.get(orderNum).timeIn < curMin){ //add all the orders that have come in before the current time
-                queue.add(orderList.get(orderNum));
+            	queue.add(orderList.get(orderNum));
                 orderNum++;
             }
             if(queue.size() > 1){ //send out the drone
