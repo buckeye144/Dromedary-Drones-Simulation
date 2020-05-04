@@ -62,7 +62,7 @@ public class exportExcel {
 		}
 		
 		XSSFDrawing drawing = spreadsheet.createDrawingPatriarch();
-		XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 4, 7, 26);
+		XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 4, 4, 14, 26);
 		
 		XSSFChart chart = drawing.createChart(anchor);
 		chart.setTitleText("Drone Simulation");
@@ -81,7 +81,7 @@ public class exportExcel {
 		//Create data series for FIFO orders
 		int curOrder = 0; //keep track of what order you're on
 		ArrayList<Integer> FIFOorders = new ArrayList<>();
-		ArrayList<String> timeRange = new ArrayList<>();
+		ArrayList<String> FIFOtimeRange = new ArrayList<>();
 		for (Integer min = 1; min < maxTime; min++) {
 			int numOrders = 0;
 			while(curOrder < results.get(0).size()){
@@ -92,14 +92,14 @@ public class exportExcel {
 				}
 				else{
 					FIFOorders.add(numOrders);
-					timeRange.add(min.toString());
+					FIFOtimeRange.add(min.toString());
 					break;
 				}
 			}
 		}
 		
 		Integer[] FIFOarray = FIFOorders.toArray(new Integer[FIFOorders.size()]);
-		String[] timeArray = timeRange.toArray(new String[timeRange.size()]);
+		String[] timeArray = FIFOtimeRange.toArray(new String[FIFOtimeRange.size()]);
 		XDDFNumericalDataSource<Integer> FIFOnumOrders = XDDFDataSourcesFactory.fromArray(FIFOarray);
 		XDDFDataSource<String> times = XDDFDataSourcesFactory.fromArray(timeArray);
 		FIFOAverage = FIFOAverage / (double)results.get(0).size();
@@ -107,7 +107,8 @@ public class exportExcel {
 		//Create data series for Knapsack orders
         curOrder = 0; //keep track of what order you're on
         ArrayList<Integer> KnapsackOrders = new ArrayList<>();
-		for (int min = 1; min < maxTime; min++) {
+        ArrayList<String> KPtimeRange = new ArrayList<>();
+		for (Integer min = 1; min < maxTime; min++) {
 			int numOrders = 0;
 			while(curOrder < results.get(0).size()){
 				if(results.get(1).get(curOrder) < min){
@@ -117,20 +118,23 @@ public class exportExcel {
 				}
 				else{
 					KnapsackOrders.add(numOrders);
+					KPtimeRange.add(min.toString());
 					break;
 				}
 			}
 		}
 		Integer[] KnapsackArray = KnapsackOrders.toArray(new Integer[KnapsackOrders.size()]);
+		String[] KPTimeArray = KPtimeRange.toArray(new String[KPtimeRange.size()]);
 		XDDFNumericalDataSource<Integer> KnapsackNumOrders = XDDFDataSourcesFactory.fromArray(KnapsackArray);
+		XDDFDataSource<String> KPtimes = XDDFDataSourcesFactory.fromArray(KPTimeArray);
 		KnapsackAverage = KnapsackAverage / (double)results.get(1).size();
 		
 		//Create data series and chart them
 		XDDFChartData data = chart.createData(ChartTypes.BAR, xAxis, yAxis);
 		XDDFChartData.Series FIFOseries = data.addSeries(times, FIFOnumOrders);
-//		XDDFChartData.Series KnapsackSeries = data.addSeries(times, KnapsackNumOrders);
+		XDDFChartData.Series KnapsackSeries = data.addSeries(KPtimes, KnapsackNumOrders);
 		FIFOseries.setTitle("FIFO", null);
-//		KnapsackSeries.setTitle("Knapsack", null);
+		KnapsackSeries.setTitle("Knapsack", null);
 		data.setVaryColors(true);
 		chart.plot(data);
 		
