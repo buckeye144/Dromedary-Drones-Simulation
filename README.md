@@ -12,3 +12,6 @@ How to run:
 
 What it does:
 Click the "Start Simulation" button to run on the default settings. This will randomly generate orders according to preset probabilities and the preset map. The orders will be delivered in order  decided by one of two algorithms (FIFO and Knapsack). The resulting times for delivery will be displayed on a graph. The results will also be exported to excel with a graph being generated there as well.
+
+WARNING:
+Close the excel spreadsheet before running the program.
