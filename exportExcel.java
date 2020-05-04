@@ -128,9 +128,9 @@ public class exportExcel {
 		//Create data series and chart them
 		XDDFChartData data = chart.createData(ChartTypes.BAR, xAxis, yAxis);
 		XDDFChartData.Series FIFOseries = data.addSeries(times, FIFOnumOrders);
-		XDDFChartData.Series KnapsackSeries = data.addSeries(times, KnapsackNumOrders);
+//		XDDFChartData.Series KnapsackSeries = data.addSeries(times, KnapsackNumOrders);
 		FIFOseries.setTitle("FIFO", null);
-		KnapsackSeries.setTitle("Knapsack", null);
+//		KnapsackSeries.setTitle("Knapsack", null);
 		data.setVaryColors(true);
 		chart.plot(data);
 		

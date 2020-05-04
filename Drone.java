@@ -23,7 +23,7 @@ public class Drone{
         int filledCapacity = 0;
 
         for(int i = 0; i < orders.size(); i++){
-            while(i < orders.size() && this.maxCapacity > filledCapacity + OrderCapacity(orders.get(i))){
+            while(i < orders.size() && .95 *  this.maxCapacity > filledCapacity + OrderCapacity(orders.get(i))){
                 filledCapacity += OrderCapacity(orders.get(i));
                 nthGroup.add(orders.get(i));
                 i++;
@@ -46,7 +46,7 @@ public class Drone{
             if(packedIndexes.contains(i)){
                 continue; //we already packed this item
             }
-            while(i < orders.size() && this.maxCapacity > filledCapacity + OrderCapacity(orders.get(i))){
+            while(i < orders.size() && .95 * this.maxCapacity > filledCapacity + OrderCapacity(orders.get(i))){
                 filledCapacity += OrderCapacity(orders.get(i));
                 nthGroup.add(orders.get(i));
                 i++;
@@ -54,8 +54,8 @@ public class Drone{
             i--; //adjust back to not skip over items
             //jump over items to find a item that will fit, we already know i doesn't fit
             int skippedWeight = OrderCapacity(orders.get(i));
-            for(int j = i + 1; j < orders.size() && skippedWeight < this.maxCapacity; j++){
-                if(OrderCapacity(orders.get(j)) + filledCapacity < this.maxCapacity){
+            for(int j = i + 1; j < orders.size() && skippedWeight < .95 * this.maxCapacity; j++){
+                if(OrderCapacity(orders.get(j)) + filledCapacity < .95 * this.maxCapacity){
                     filledCapacity += OrderCapacity(orders.get(j));
                     nthGroup.add(orders.get(j));
                     packedIndexes.add(j);
@@ -75,7 +75,9 @@ public class Drone{
         int size = 0;
         for(int i = 0; i < order.meals.items.size(); i++){
             size += order.meals.items.get(i).weight;
+            
         }
+        
         return size;
     }
 }

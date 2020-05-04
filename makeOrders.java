@@ -25,6 +25,7 @@ public class makeOrders{
         //standard location
         Location defaultLoc = new Location("null", 0, 0);
         
+        
         //Put the meals into orders as they are probable
         ArrayList<Order> possOrders = new ArrayList<>();
         //add all the possible meals to and possOrder list
@@ -74,14 +75,16 @@ public class makeOrders{
             	queue.add(orderList.get(orderNum));
                 orderNum++;
             }
+            
             if(queue.size() > 1){ //send out the drone
                 //calculate how large the queue is
                 int queueSize = 0;
                 for(int i = 0; i < queue.size(); i++){
                     queueSize += drone.OrderCapacity(queue.get(i));
                 }
+//                System.out.println("FIFO " + queueSize);
                 //check if the whole queue can fit on the drone, if so send it all
-                if(queueSize <= drone.maxCapacity){
+                if(queueSize <= drone.maxCapacity * .95){
                     travelTime = tc.time(queue, true);
                     for(int i = 0; i < queue.size(); i++){
                         turnAroundTime.add((double)(curMin + queue.get(i).timeOut - queue.get(i).timeIn));
@@ -133,7 +136,7 @@ public class makeOrders{
                     queueSize += drone.OrderCapacity(queue.get(i));
                 }
                 //check if the whole queue can fit on the drone, if so send it all
-                if(queueSize <= drone.maxCapacity){
+                if(queueSize <= drone.maxCapacity * .95){
                     travelTime = tc.time(queue, true);
                     for(int i = 0; i < queue.size(); i++){
                         turnAroundTime.add((double)(curMin + queue.get(i).timeOut - queue.get(i).timeIn));

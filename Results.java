@@ -16,13 +16,22 @@ public class Results {
 
 	public Scene results(MainMenu mm, ArrayList<ArrayList<Double>> results) {
 		
-		double fifoMin = results.get(0).get(1);
-		double knapsackMin = results.get(1).get(1);
+		double fifoMin = results.get(0).get(20);
+		double knapsackMin = results.get(1).get(20);
 		double fifoMax = results.get(0).get(results.get(0).size() - 1);
 		double knapsackMax = results.get(1).get(results.get(1).size() - 1);
 		double maxTime = Math.max(fifoMax, knapsackMax); //find the max time it took
 		double FIFOAverage = 0;
 		double KnapsackAverage = 0;
+		
+//		for(int i = 0; i < results.size(); i++) {
+//			for(int j = 0; j < results.get(i).size(); j++) {
+//				if(results.get(i).get(j) == 1.0) {
+//					System.out.print(i + " " + j);
+//					System.out.println(": " + results.get(i).get(j));
+//				}
+//			}
+//		}
 
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -67,7 +76,7 @@ public class Results {
         curOrder = 0; //keep track of what order you're on
 		for (int min = 1; min < maxTime; min++) {
 			int numOrders = 0;
-			while(curOrder < results.get(0).size()){
+			while(curOrder < results.get(1).size()){
 				if(results.get(1).get(curOrder) < min){
 					KnapsackAverage += results.get(1).get(curOrder);
 					curOrder++;

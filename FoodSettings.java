@@ -128,13 +128,6 @@ public class FoodSettings {
 			}
 		});
 		
-		
-		//TODO:
-		//Find out way to add food items to meals
-		//Make a shifts settings page
-		
-		
-		
 		update.setOnAction(e -> {
 			int index = foodList.getSelectionModel().getSelectedIndex();
 			if(index == -1) {

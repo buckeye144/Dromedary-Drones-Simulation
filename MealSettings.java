@@ -34,6 +34,8 @@ public class MealSettings {
 		GridPane grid2 = new GridPane();
 		ListView<String> meals = new ListView<String>();
 		ListView<String> mealItems = new ListView<String>();
+		ListView<FoodItem> addFoods = new ListView<FoodItem>();
+		ObservableList<FoodItem> list = FXCollections.observableArrayList();
 		items = FXCollections.observableArrayList ();
 		ObservableList<String> foodItems = FXCollections.observableArrayList();
 		TextField addMealBox = new TextField();
@@ -52,6 +54,8 @@ public class MealSettings {
 		Button back = new Button("Back");
 		Button remove2 = new Button("Remove");
 		Button update = new Button("Update");
+		Button add2 = new Button("Add Food to Meal");
+		Button add3 = new Button("Add Food to Meal");
 
 		//Button/label styling
 		back.setStyle("-fx-font-size:16");
@@ -98,7 +102,8 @@ public class MealSettings {
 		GridPane.setConstraints(title2, 1, 0);
 		GridPane.setConstraints(mealItems, 1, 1);
 		GridPane.setConstraints(remove2, 1, 2);
-		GridPane.setConstraints(grid2, 0, 5);
+		GridPane.setConstraints(add2, 1, 3);
+		GridPane.setConstraints(grid2, 0, 4);
 		
 		grid.getChildren().addAll(title,title2,meals,mealItems,
 				remove,remove2,confirm2,grid2);
@@ -120,6 +125,7 @@ public class MealSettings {
 				String temp = String.format("%d", test2);
 				editProbability.setText(temp);
 				addMealBox.setText(mm.os.meals.get(index).name);
+				grid.getChildren().add(add2);
 			} catch (Exception e1) {
 			}
 		});
@@ -147,6 +153,41 @@ public class MealSettings {
 			}
 		});
 		
+		add2.setOnAction(e -> {
+			Label addFood = new Label("Add food to a meal");
+			
+			for(int i = 0; i < mm.os.foodList.size(); i++) {
+				list.add(mm.os.foodList.get(i));
+			}
+			addFood.setStyle("-fx-font-size: 20");
+			addFoods.setStyle("-fx-font-size: 20");
+			
+			addFoods.setItems(list);
+			addFoods.setMaxHeight(200);
+			addFoods.setMinWidth(300);
+			
+			grid.getChildren().remove(add2);
+			
+			GridPane.setConstraints(add3, 2, 2);
+			GridPane.setConstraints(addFood, 2, 0);
+			GridPane.setConstraints(addFoods, 2, 1);
+			
+			grid.getChildren().addAll(addFood,addFoods,add3);
+		});
+		
+		add3.setOnAction(e -> {
+			int index = meals.getSelectionModel().getSelectedIndex();
+			int index2 = addFoods.getSelectionModel().getSelectedIndex();
+			mm.os.meals.get(index).items.add(mm.os.foodList.get(index2));
+			foodItems.clear();
+			try {
+				for(int i = 0; i < mm.os.meals.get(index).items.size(); i++) {
+					foodItems.add(mm.os.meals.get(index).items.get(i).name);
+				}
+			} catch (Exception e1) {
+			}
+		});
+		
 		update.setOnAction(e -> {
 			int index = meals.getSelectionModel().getSelectedIndex();
 			if(index == -1) {
@@ -156,6 +197,7 @@ public class MealSettings {
 					}
 				}
 			}
+			previous = (int) (mm.os.meals.get(index).probability * 100);
 			if(addMealBox.getText().matches("")) {
 				confirm.setText("Invalid Name");
 			}
@@ -172,7 +214,6 @@ public class MealSettings {
 				confirm.setText("Cannot go above 100% probability");
 			}
 			else if(editProbability.getText().matches("[0-9]*")) {
-				previous = (int) (mm.os.meals.get(index).probability * 100);
 				xml.updateMeal(mm.os.meals.get(index), addMealBox.getText(), editProbability.getText());
 				mm.os.meals.get(index).name = addMealBox.getText();
 				mm.os.meals.get(index).probability = Double.parseDouble(editProbability.getText()) / 100;
@@ -285,7 +326,7 @@ public class MealSettings {
 						
 						//Find the foods weight previously loaded from food.xml
 						for(int k = 0; k < mm.os.foodList.size(); k++) {
-							if(mm.os.foodList.get(k).name.matches(foodName)) {
+							if(mm.os.foodList.get(k).name.toUpperCase().matches(foodName.toUpperCase())) {
 								weight = mm.os.foodList.get(k).weight;
 							}
 						}

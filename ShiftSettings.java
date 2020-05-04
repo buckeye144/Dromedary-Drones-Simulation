@@ -125,7 +125,7 @@ public class ShiftSettings {
 			
 		});
 		
-		//Works
+		//TODO: FIX
 		remove.setOnAction(e -> {
 			if(orders.getSelectionModel().isEmpty()) {
 				confirm2.setText("Nothing selected");

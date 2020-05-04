@@ -110,15 +110,13 @@ public class XML {
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse(filename);
 			NodeList nodes = doc.getElementsByTagName(tagname);
-			Node n = nodes.item(0);
-			NodeList orders = n.getChildNodes();
-			for (int i = 0; i < orders.getLength(); i++) {
+			for (int i = 0; i < nodes.getLength(); i++) {
 				if(i % 2 == 0) {
 					continue;
 				}
-				Node order = orders.item(i);
+				Node order = nodes.item(i);
 				if(order.getNodeType() == Node.ELEMENT_NODE) {
-					Element thingToBeRemoved = (Element)orders.item(i);
+					Element thingToBeRemoved = (Element)nodes.item(i);
 					int number = Integer.parseInt(thingToBeRemoved.getTextContent());
 					if(number == removed) {
 						thingToBeRemoved.getParentNode().removeChild(thingToBeRemoved);
@@ -339,8 +337,6 @@ public class XML {
 			//Get a list of meals
 			NodeList meals = doc.getElementsByTagName("meal");
 			
-			//Get a list of food in each meal
-			NodeList allFood = doc.getElementsByTagName("foodList");
 			for(int i = 0; i < meals.getLength(); i++) {
 				
 				//Get one meal
@@ -353,6 +349,15 @@ public class XML {
 				if(mName.matches(meal.name)) {
 					mealName.setTextContent(newName);
 					prob.setTextContent(Double.toString(newProb));
+					NodeList list = mealThing.getElementsByTagName("foodItem");
+//					for(int j = 0; j < list.getLength(); j++) {
+//						Node n = list.item(j);
+//						n.getParentNode().removeChild(n);
+//					}
+					NodeList n = mealThing.getElementsByTagName("foodList");
+					System.out.println(n.item(0).getTextContent());
+					
+					
 				}
 			}
 			
