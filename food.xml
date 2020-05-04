@@ -6,18 +6,17 @@
   </food>
 <food>
     <foodName>fries</foodName>
-    <weight>4</weight>
+    <weight>5</weight>
   </food>
 <food>
     <foodName>drink</foodName>
-    <weight>14</weight>
+    <weight>15</weight>
   </food>
 
 
 
 
-<food>
-    <foodName>test</foodName>
-    <weight>24</weight>
-  </food>
+
+
+
 </foodList>

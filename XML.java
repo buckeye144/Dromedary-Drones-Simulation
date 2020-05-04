@@ -325,7 +325,7 @@ public class XML {
 		}
 	}
 	
-	public void updateMeal(String thingName, String newName, String temp) {
+	public void updateMeal(Meal meal, String newName, String probability) {
 		
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -333,7 +333,7 @@ public class XML {
 			Document doc = docBuilder.parse("meals.xml");
 			
 			//Convert newProb to decimal number
-			double newProb = Double.parseDouble(temp);
+			double newProb = Double.parseDouble(probability);
 			newProb = newProb / 100.0;
 			
 			//Get a list of meals
@@ -350,7 +350,7 @@ public class XML {
 				Element mealName = (Element) mealThing.getElementsByTagName("mealName").item(0);
 				Element prob = (Element) mealThing.getElementsByTagName("probability").item(0);
 				String mName = mealName.getTextContent();
-				if(mName.matches(thingName)) {
+				if(mName.matches(meal.name)) {
 					mealName.setTextContent(newName);
 					prob.setTextContent(Double.toString(newProb));
 				}

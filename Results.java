@@ -83,12 +83,12 @@ public class Results {
         
         histogram.getData().addAll(series,series2);
         
-		Label FIFOAverageLabel = new Label(String.format("FIFO Average: %.3f", FIFOAverage));
-		Label KnapsackAverageLabel = new Label(String.format("Knapsack Average: %.3f", KnapsackAverage));
-		Label maxFifoLabel = new Label(String.format("Max FIFO time: %.3f", fifoMax));
-		Label maxKnapsackLabel = new Label(String.format("Max Knapsack time: %.3f", knapsackMax));
-		Label minFifoLabel = new Label(String.format("Min FIFO time: %.3f", fifoMin));
-		Label minKnapsackLabel = new Label(String.format("Min Knapsack time: %.3f", knapsackMin));
+		Label FIFOAverageLabel = new Label(String.format("FIFO Average: %.4f", FIFOAverage));
+		Label KnapsackAverageLabel = new Label(String.format("Knapsack Average: %.4f", KnapsackAverage));
+		Label maxFifoLabel = new Label(String.format("Max FIFO time: %.4f", fifoMax));
+		Label maxKnapsackLabel = new Label(String.format("Max Knapsack time: %.4f", knapsackMax));
+		Label minFifoLabel = new Label(String.format("Min FIFO time: %.4f", fifoMin));
+		Label minKnapsackLabel = new Label(String.format("Min Knapsack time: %.4f", knapsackMin));
         
         FIFOAverageLabel.setStyle("-fx-font-size:20");
         KnapsackAverageLabel.setStyle("-fx-font-size:20");

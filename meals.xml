@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><mealList>
+  <name>Meal list</name>
+<meal>
+    <mealName>Typical</mealName>
+    <foodList>
+      <foodItem>Hamburger</foodItem>
+      <foodItem>Fries</foodItem>
+      <foodItem>Drink</foodItem>
+    </foodList>
+    <probability>0.5</probability>
+  </meal>
+<meal>
+    <mealName>Two Burger Meal</mealName>
+    <foodList>
+      <foodItem>Hamburger</foodItem>
+      <foodItem>Hamburger</foodItem>
+      <foodItem>Fries</foodItem>
+      <foodItem>Drink</foodItem>
+    </foodList>
+    <probability>0.2</probability>
+  </meal>
+<meal>
+    <mealName>Burger and Fries</mealName>
+    <foodList>
+      <foodItem>Hamburger</foodItem>
+      <foodItem>Fries</foodItem>
+    </foodList>
+    <probability>0.15</probability>
+  </meal>
+<meal>
+    <mealName>Two Burgers</mealName>
+    <foodList>
+      <foodItem>Hamburger</foodItem>
+      <foodItem>Hamburger</foodItem>
+      <foodItem>Fries</foodItem>
+    </foodList>
+    <probability>0.1</probability>
+  </meal>
+<meal>
+    <mealName>Just Fries</mealName>
+    <foodList>
+      <foodItem>Fries</foodItem>
+    </foodList>
+    <probability>0.05</probability>
+  </meal>
+</mealList>

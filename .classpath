@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path=""/>
-	<classpathentry kind="output" path=""/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/commons-compress-1.20.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/curvesapi-1.06.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/poi-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/poi-examples-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/poi-excelant-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/poi-ooxml-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/poi-ooxml-schemas-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/poi-scratchpad-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Zonic485/Downloads/Dromedary-Drones-Simulation-excel-barchart/jars/xmlbeans-3.1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

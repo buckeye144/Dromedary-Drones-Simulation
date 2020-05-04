@@ -173,7 +173,7 @@ public class MealSettings {
 			}
 			else if(editProbability.getText().matches("[0-9]*")) {
 				previous = (int) (mm.os.meals.get(index).probability * 100);
-				xml.updateMeal(mm.os.meals.get(index).name, addMealBox.getText(), editProbability.getText());
+				xml.updateMeal(mm.os.meals.get(index), addMealBox.getText(), editProbability.getText());
 				mm.os.meals.get(index).name = addMealBox.getText();
 				mm.os.meals.get(index).probability = Double.parseDouble(editProbability.getText()) / 100;
 				items.clear();

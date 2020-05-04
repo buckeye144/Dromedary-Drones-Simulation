@@ -94,8 +94,8 @@ public class MainMenu extends Application {
 			results.add(knapsack);
 			Results r = new Results();
 			menu.setScene(r.results(this, results));
-//			exportExcel excel = new exportExcel();
-//			excel.printExcel(results);
+			exportExcel excel = new exportExcel();
+			excel.printExcel(results);
 		});
 		
 		settings.setOnAction(e -> {
