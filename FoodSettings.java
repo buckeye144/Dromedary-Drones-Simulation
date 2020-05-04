@@ -104,59 +104,64 @@ public class FoodSettings {
 		
 		//Adds a new food item
 		add.setOnAction(e -> {
-			//If one of the boxes is empty, print error message
-			if (name.getText().matches("") || weight.getText().matches("")) {
-				confirm.setText("Invalid name/weight");
-			}
-			else if (checkForExistingName(name.getText())) {
+			if (checkForExistingName(name.getText())) {
 				confirm.setText("Food name already exists");
-			}
-			//Prevents letters/characters being used as weights
-			else if (!weight.getText().matches("[0-9]*")) {
-				confirm.setText("Invalid name/weight");
-			}
-			//Adds new food item
-			else if (name.getText() != null && weight.getText() != null) {
-				FoodItem f = new FoodItem(name.getText(), Integer.parseInt(weight.getText()));
-				xml.addFood(f);
-				mm.os.foodList.add(f);
-				food.add(f.name);
-				foodList.setItems(food);
-				confirm.setText(f.name + " added!");
-				name.clear();
-				weight.clear();
+			} else {
+				//If one of the boxes is empty, print error message
+				if (name.getText().matches("") || weight.getText().matches("")) {
+					confirm.setText("Invalid name/weight");
+				}
+				//Prevents letters/characters being used as weights
+				else if (!weight.getText().matches("[0-9]*")) {
+					confirm.setText("Invalid name/weight");
+				}
+				//Adds new food item
+				else if (name.getText() != null && weight.getText() != null) {
+					FoodItem f = new FoodItem(name.getText(), Integer.parseInt(weight.getText()));
+					xml.addFood(f);
+					mm.os.foodList.add(f);
+					food.add(f.name);
+					foodList.setItems(food);
+					confirm.setText(f.name + " added!");
+					name.clear();
+					weight.clear();
+				}
 			}
 		});
 		
 		update.setOnAction(e -> {
 			int index = foodList.getSelectionModel().getSelectedIndex();
-			if(index == -1) {
-				for(int i = 0; i < food.size(); i++) {
-					if(food.get(i).matches(name.getText())) {
-						index = foodList.getItems().indexOf(food.get(i));
+			if(foodList.getSelectionModel().isEmpty()) {
+				confirm.setText("Please select something to update");
+			} else {
+				if(index == -1) {
+					for(int i = 0; i < food.size(); i++) {
+						if(food.get(i).matches(name.getText())) {
+							index = foodList.getItems().indexOf(food.get(i));
+						}
 					}
 				}
-			}
-			//If one of the boxes is empty, print error message
-			if (name.getText().matches("") || weight.getText().matches("")) {
-				confirm.setText("Invalid name/weight");
-			}
-			else if (checkForExistingNameUpdating(name.getText(), index)) {
-				confirm.setText("Food name already exists");
-			}
-			else if(foodList.getSelectionModel().isEmpty()) {
-				confirm.setText("Please select something to update");
-			}
-			//Prevents letters/characters being used as weights
-			else if (weight.getText().matches("[0-9]*")) {
-				xml.updateFood(mm.os.foodList.get(index).name, name.getText(), weight.getText());
-				mm.os.foodList.get(index).name = name.getText();
-				mm.os.foodList.get(index).weight = Integer.parseInt(weight.getText());
-				food.clear();
-				readFoodItems(mm);
-				confirm.setText("Updated");
-				name.clear();
-				weight.clear();
+				//If one of the boxes is empty, print error message
+				if (name.getText().matches("") || weight.getText().matches("")) {
+					confirm.setText("Invalid name/weight");
+				}
+				else if (checkForExistingNameUpdating(name.getText(), index)) {
+					confirm.setText("Food name already exists");
+				}
+				else if(foodList.getSelectionModel().isEmpty()) {
+					confirm.setText("Please select something to update");
+				}
+				//Prevents letters/characters being used as weights
+				else if (weight.getText().matches("[0-9]*")) {
+					xml.updateFood(mm.os.foodList.get(index).name, name.getText(), weight.getText());
+					mm.os.foodList.get(index).name = name.getText();
+					mm.os.foodList.get(index).weight = Integer.parseInt(weight.getText());
+					food.clear();
+					readFoodItems(mm);
+					confirm.setText("Updated");
+					name.clear();
+					weight.clear();
+				}
 			}
 		});
 		

@@ -131,7 +131,7 @@ public class MealSettings {
 		});
 		
 		add.setOnAction(e -> {
-			if(addMealBox.getText().matches("")) {
+			if(addMealBox.getText().matches("") || editProbability.getText().matches("")) {
 				confirm.setText("Invalid Name");
 			}
 			else if (checkForExistingName(addMealBox.getText())) {
@@ -145,6 +145,7 @@ public class MealSettings {
 				Meal temp = new Meal(addMealBox.getText(), empty, Double.parseDouble(editProbability.getText()) / 100);
 				mm.os.meals.add(temp);
 				foodItems.clear();
+				items.clear();
 				for(int i = 0; i < mm.os.meals.size(); i++) {
 					items.add(mm.os.meals.get(i).name);
 				}
@@ -190,38 +191,39 @@ public class MealSettings {
 		
 		update.setOnAction(e -> {
 			int index = meals.getSelectionModel().getSelectedIndex();
-			if(index == -1) {
-				for(int i = 0; i < items.size(); i++) {
-					if(items.get(i).matches(addMealBox.getText())) {
-						index = meals.getItems().indexOf(items.get(i));
+			if(meals.getSelectionModel().isEmpty()) {
+				confirm.setText("Please select something to update");
+			} else {
+				if(index == -1) {
+					for(int i = 0; i < items.size(); i++) {
+						if(items.get(i).matches(addMealBox.getText())) {
+							index = meals.getItems().indexOf(items.get(i));
+						}
 					}
 				}
-			}
-			previous = (int) (mm.os.meals.get(index).probability * 100);
-			if(addMealBox.getText().matches("")) {
-				confirm.setText("Invalid Name");
-			}
-			else if(meals.getSelectionModel().isEmpty()) {
-				confirm.setText("Please select something to update");
-			}
-			else if(checkForExistingNameUpdating(addMealBox.getText(), index)) {
-				confirm.setText("Meal name already exists");
-			}
-			else if(editProbability.getText().contains("-")) {
-				confirm.setText("Cannot insert negative values");
-			}
-			else if(checkProbabilityUpdating((int)Double.parseDouble(editProbability.getText()), loadMeals(mm), previous)) {
-				confirm.setText("Cannot go above 100% probability");
-			}
-			else if(editProbability.getText().matches("[0-9]*")) {
-				xml.updateMeal(mm.os.meals.get(index), addMealBox.getText(), editProbability.getText());
-				mm.os.meals.get(index).name = addMealBox.getText();
-				mm.os.meals.get(index).probability = Double.parseDouble(editProbability.getText()) / 100;
-				items.clear();
-				totalProbability.setText("Total probability: " + loadMeals(mm) + "%");
-				confirm.setText("Updated");
-				addMealBox.clear();
-				editProbability.clear();
+				previous = (int) (mm.os.meals.get(index).probability * 100);
+				if(addMealBox.getText().matches("")) {
+					confirm.setText("Invalid Name");
+				}
+				else if(checkForExistingNameUpdating(addMealBox.getText(), index)) {
+					confirm.setText("Meal name already exists");
+				}
+				else if(editProbability.getText().contains("-")) {
+					confirm.setText("Cannot insert negative values");
+				}
+				else if(checkProbabilityUpdating((int)Double.parseDouble(editProbability.getText()), loadMeals(mm), previous)) {
+					confirm.setText("Cannot go above 100% probability");
+				}
+				else if(editProbability.getText().matches("[0-9]*")) {
+	//				xml.updateMeal(mm.os.meals.get(index), addMealBox.getText(), editProbability.getText());
+					mm.os.meals.get(index).name = addMealBox.getText();
+					mm.os.meals.get(index).probability = Double.parseDouble(editProbability.getText()) / 100;
+					items.clear();
+					totalProbability.setText("Total probability: " + loadMeals(mm) + "%");
+					confirm.setText("Updated");
+					addMealBox.clear();
+					editProbability.clear();
+				}
 			}
 		});
 		
@@ -232,7 +234,7 @@ public class MealSettings {
 			} else {
 				int index = meals.getSelectionModel().getSelectedIndex();
 				confirm2.setText("Removed " + items.get(index));
-				xml.remove(items.get(index), "meal", "mealName", "meals.xml");
+//				xml.remove(items.get(index), "meal", "mealName", "meals.xml");
 				items.remove(index);
 				mm.os.meals.remove(index);
 				meals.getSelectionModel().clearSelection();
@@ -248,7 +250,7 @@ public class MealSettings {
 				int index = meals.getSelectionModel().getSelectedIndex();
 				int index2 = mealItems.getSelectionModel().getSelectedIndex();
 				confirm.setText("Removed " + foodItems.get(index2));
-				xml.removeMealFood(items.get(index), foodItems.get(index2), index2);
+//				xml.removeMealFood(items.get(index), foodItems.get(index2), index2);
 				foodItems.remove(index2);
 				mm.os.meals.get(index).items.remove(index2);
 				mealItems.getSelectionModel().clearSelection();

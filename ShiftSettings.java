@@ -100,6 +100,9 @@ public class ShiftSettings {
 		add.setOnAction(e -> {
 			if(!orderNumber.getText().matches("[0-9]*")) {
 				confirm2.setText("Invalid number");
+			}
+			else if (orderNumber.getText().matches("")){
+				confirm2.setText("Please insert a number");
 			} else {
 				xml.addShift(Integer.parseInt(orderNumber.getText()));
 				loadShifts();
@@ -111,7 +114,7 @@ public class ShiftSettings {
 		update.setOnAction(e -> {
 			int index = orders.getSelectionModel().getSelectedIndex();
 			if(orders.getSelectionModel().isEmpty()) {
-				confirm2.setText("Nothing selected to update");
+				confirm2.setText("Please select something to update");
 			}
 			else if(!orderNumber.getText().matches("[0-9]*")) {
 				confirm2.setText("Invalid number");

@@ -151,39 +151,43 @@ public class LocationSettings {
 		
 		//Updates an existing location
 		update.setOnAction(e -> {
-			if (name.getText().matches("")) {
-				confirm.setText("Cannot insert blank name");
-			}
-			else if(x.getText().matches("") || y.getText().matches("")) {
-				confirm.setText("Invalid coordinates");
-			}
-			else if (!x.getText().matches("-?[0-9]*") || !y.getText().matches("-?[0-9]*")) {
-				confirm.setText("Invalid name/coordinates");
-			}
-			else if(checkForExistingNameUpdating(name.getText(), locations.getSelectionModel().getSelectedIndex())) {
-				confirm.setText("Location name already exists");
-			}
-			else if(checkForExistingCoordinates(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()))) {
-				confirm.setText("Same coordinates as " + sameLocation);
-			}
-			else if(locations.getSelectionModel().isEmpty()) {
+			if(locations.getSelectionModel().isEmpty()) {
 				confirm.setText("Please select something to update");
-			}
-			else {
-				String current = locations.getSelectionModel().selectedItemProperty().get().getName();
-				int index = locations.getSelectionModel().getSelectedIndex();
-				xml.updateLocation(current, name.getText(), x.getText(), y.getText());
-				map.waypoints.get(index).setName(name.getText());
-				map.waypoints.get(index).setX(Integer.parseInt(x.getText()));
-				map.waypoints.get(index).setY(Integer.parseInt(y.getText()));
-				items.clear();
-				for(int i = 0; i < map.waypoints.size(); i++) {
-					items.add(map.waypoints.get(i));
+			} else {
+				if (name.getText().matches("")) {
+					confirm.setText("Cannot insert blank name");
 				}
-				confirm.setText("Updated!");
-				name.clear();
-				x.clear();
-				y.clear();
+				else if(x.getText().matches("") || y.getText().matches("")) {
+					confirm.setText("Invalid coordinates");
+				}
+				else if (!x.getText().matches("-?[0-9]*") || !y.getText().matches("-?[0-9]*")) {
+					confirm.setText("Invalid name/coordinates");
+				}
+				else if(checkForExistingNameUpdating(name.getText(), locations.getSelectionModel().getSelectedIndex())) {
+					confirm.setText("Location name already exists");
+				}
+				else if(checkForExistingCoordinates(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()))) {
+					confirm.setText("Same coordinates as " + sameLocation);
+				}
+				else if(locations.getSelectionModel().isEmpty()) {
+					confirm.setText("Please select something to update");
+				}
+				else {
+					String current = locations.getSelectionModel().selectedItemProperty().get().getName();
+					int index = locations.getSelectionModel().getSelectedIndex();
+					xml.updateLocation(current, name.getText(), x.getText(), y.getText());
+					map.waypoints.get(index).setName(name.getText());
+					map.waypoints.get(index).setX(Integer.parseInt(x.getText()));
+					map.waypoints.get(index).setY(Integer.parseInt(y.getText()));
+					items.clear();
+					for(int i = 0; i < map.waypoints.size(); i++) {
+						items.add(map.waypoints.get(i));
+					}
+					confirm.setText("Updated!");
+					name.clear();
+					x.clear();
+					y.clear();
+				}
 			}
 		});
 		
